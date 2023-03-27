@@ -66,8 +66,7 @@ tunneling/exfiltration detection algorithm.
 Report of F5.com on the FluBot malware can be found
 [here](./F5-FluBot.pdf).
 
-<img
-src="src/work/2023-03-08-flubot-multiple-nodes/imgs/flubot-masks-as-flash-player.png"
+<img src="readme_media/imgs/flubot-masks-as-flash-player.png"
 id="fig-flubot" class="quarto-discovered-preview-image"
 alt="Figure 1: Flubot masks as a flash player" />
 
@@ -110,8 +109,7 @@ the experiment, the traffic was collected and saved to the CSV files
 (see [Section 3](#sec-experiment-log))
 [Figure 2](#fig-capture-screenshot) .
 
-<img
-src="src/work/2023-03-08-flubot-multiple-nodes/imgs/exp1-screen2.png"
+<img src="readme_media/imgs/exp1-screen2.png"
 id="fig-capture-screenshot" alt="Figure 2: Screenshot" />
 
 ## Model training
@@ -120,8 +118,8 @@ Model training includes data preparation in two steps (cached processing
 and preprocessing with hyperparameters) (see
 [Section 4](#sec-training)).
 
-<img src="src/work/2023-03-08-flubot-multiple-nodes/imgs/overview.png"
-id="fig-training-overview" alt="Figure 3: Model training overview" />
+<img src="readme_media/imgs/overview.png" id="fig-training-overview"
+alt="Figure 3: Model training overview" />
 
 ## Malware detection
 
@@ -132,8 +130,7 @@ DGA-based malware detection. However, the approach should be used to
 detect DNS data exfiltration, too, since the behavior pattern is similar
 (see [Section 5](#sec-detection-overview)).
 
-<img src="src/work/2023-03-08-flubot-multiple-nodes/imgs/detection.png"
-id="fig-detection-overview"
+<img src="readme_media/imgs/detection.png" id="fig-detection-overview"
 alt="Figure 4: Malware detection overview" />
 
 # Design and log of experiment 1
@@ -151,9 +148,8 @@ Android nodes:
 - 192.168.2.249 Android with Chrome configured for **plaintext DNS**
 - 192.168.217 Android to be infected with FluBot
 
-<img
-src="src/work/2023-03-08-flubot-multiple-nodes/imgs/network.drawio.png"
-id="fig-network" alt="Figure 5: Network" />
+<img src="readme_media/imgs/network.drawio.png" id="fig-network"
+alt="Figure 5: Network" />
 
 ## OpenWRT router configuration
 
@@ -191,9 +187,8 @@ To do that, we install the latest Chrome (\>=83 with DoH support).
 
 On 192.168.2.149 we configure DoH (see [Figure 6](#fig-chrome-doh)).
 
-<img
-src="src/work/2023-03-08-flubot-multiple-nodes/imgs/android-chrome-doh.png"
-id="fig-chrome-doh" alt="Figure 6: Chrome configured to use DoH" />
+<img src="readme_media/imgs/android-chrome-doh.png" id="fig-chrome-doh"
+alt="Figure 6: Chrome configured to use DoH" />
 
 Chrome installation:
 
@@ -231,15 +226,15 @@ the DoH provider on the 192.168.2.149 machine from the predefined list:
 Captured traffic is saved to the CSV file using the `logger` tool from
 the NEMEA framework [Figure 7](#fig-capture).
 
-<img src="src/work/2023-03-08-flubot-multiple-nodes/imgs/capture.png"
-id="fig-capture" alt="Figure 7: Capture" />
+<img src="readme_media/imgs/capture.png" id="fig-capture"
+alt="Figure 7: Capture" />
 
 # Experiment
 
 Experiment is conducted in two parts (see [Figure 8](#fig-timeline)):
 
-<img src="src/work/2023-03-08-flubot-multiple-nodes/imgs/timeline.png"
-id="fig-timeline" alt="Figure 8: Timeline" />
+<img src="readme_media/imgs/timeline.png" id="fig-timeline"
+alt="Figure 8: Timeline" />
 
 - B1: We collect a sample of traffic from the monitored network to train
   the scaler (see [Section 5.1](#sec-scaler))
@@ -323,11 +318,11 @@ Data preparation is done in two steps: - Cacheable processing
 (non-parametric processing) [Figure 9](#fig-cp) - Preprocessing (applies
 hyperparameters) [Figure 10](#fig-pp)
 
-<img src="src/work/2023-03-08-flubot-multiple-nodes/imgs/cp.png"
-id="fig-cp" alt="Figure 9: Cachable processing" />
+<img src="readme_media/imgs/cp.png" id="fig-cp"
+alt="Figure 9: Cachable processing" />
 
-<img src="src/work/2023-03-08-flubot-multiple-nodes/imgs/pp.png"
-id="fig-pp" alt="Figure 10: Preprocessing" />
+<img src="readme_media/imgs/pp.png" id="fig-pp"
+alt="Figure 10: Preprocessing" />
 
 ## Hyperparameters selection
 
@@ -411,8 +406,7 @@ inference [Figure 8](#fig-timeline), and train the scaler on this data.
 In the second period (B2) we can start the malware detection module with
 model and the trained scaler (see [Figure 11](#fig-model-deployment)).
 
-<img
-src="src/work/2023-03-08-flubot-multiple-nodes/imgs/model-deployment.png"
+<img src="readme_media/imgs/model-deployment.png"
 id="fig-model-deployment" alt="Figure 11: Model deployment" />
 
 ## DoH exfiltration detection algorithm
@@ -480,7 +474,7 @@ We conduct an experiment with the plan similar to the first one,
 collecting data in two (B1 and B2) periods (see
 [Figure 8](#fig-timeline)).
 
-![Timeline](src/work/2023-03-08-flubot-multiple-nodes/imgs/timeline.png)
+![Timeline](readme_media/imgs/timeline.png)
 
 - B1: We collect a sample of traffic from the monitored network to train
   the scaler (see [Section 5.1](#sec-scaler))
@@ -521,15 +515,15 @@ from sandbox network. ROCs of these models are in **?@fig-models-roc**.
 notebook-title="Choose model">
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-models-roc-output-1.png"
+src="readme_media/README_files/figure-commonmark/fig-models-roc-output-1.png"
 id="fig-models-roc-1" alt="Figure 12: Logistic Regression" />
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-models-roc-output-2.png"
+src="readme_media/README_files/figure-commonmark/fig-models-roc-output-2.png"
 id="fig-models-roc-2" alt="Figure 13: Hist Gradient Boosting" />
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-models-roc-output-3.png"
+src="readme_media/README_files/figure-commonmark/fig-models-roc-output-3.png"
 id="fig-models-roc-3" alt="Figure 14: Random Forest" />
 
 ROC and their AUC for test dataset
@@ -618,13 +612,13 @@ notebook-title="Detect malware (RF unnormed-0-0-0-0)">
     0.8
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-1-output-2.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-1-output-2.png"
 id="fig-rate_log-flubot-exp-1-1-1" alt="Figure 15: sensitivity 0.8" />
 
     0.9
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-1-output-4.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-1-output-4.png"
 id="fig-rate_log-flubot-exp-1-1-2" alt="Figure 16: sensitivity 0.9" />
 
 $\rho(a)$ plot for all instances (B2 period)
@@ -639,13 +633,13 @@ notebook-title="Detect malware (RF normed-0-0-0-0)">
     0.8
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-2-output-2.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-2-output-2.png"
 id="fig-rate_log-flubot-exp-1-2-1" alt="Figure 17: sensitivity 0.8" />
 
     0.9
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-2-output-4.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-2-output-4.png"
 id="fig-rate_log-flubot-exp-1-2-2" alt="Figure 18: sensitivity 0.9" />
 
 $\rho(a)$ plot for all instances (B2 period)
@@ -662,13 +656,13 @@ notebook-title="Detect malware (RF unnormed-2-0-0-0)">
     0.8
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-3-output-2.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-3-output-2.png"
 id="fig-rate_log-flubot-exp-1-3-1" alt="Figure 19: sensitivity 0.8" />
 
     0.9
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-3-output-4.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-3-output-4.png"
 id="fig-rate_log-flubot-exp-1-3-2" alt="Figure 20: sensitivity 0.9" />
 
 $\rho(a)$ plot for all instances (B2 period)
@@ -683,13 +677,13 @@ notebook-title="Detect malware (RF normed-2-4-0-0)">
     0.8
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-4-output-2.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-4-output-2.png"
 id="fig-rate_log-flubot-exp-1-4-1" alt="Figure 21: sensitivity 0.8" />
 
     0.9
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-rate_log-flubot-exp-1-4-output-4.png"
+src="readme_media/README_files/figure-commonmark/fig-rate_log-flubot-exp-1-4-output-4.png"
 id="fig-rate_log-flubot-exp-1-4-2" alt="Figure 22: sensitivity 0.9" />
 
 $\rho(a)$ plot for all instances (B2 period)
@@ -712,14 +706,14 @@ notebook-title="Detect malware">
     0.8
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-real-world-flubot-detection-1-output-2.png"
+src="readme_media/README_files/figure-commonmark/fig-real-world-flubot-detection-1-output-2.png"
 id="fig-real-world-flubot-detection-1-1"
 alt="Figure 23: sensitivity 0.8" />
 
     0.9
 
 <img
-src="src/work/2023-03-08-flubot-multiple-nodes/text_files/figure-commonmark/fig-real-world-flubot-detection-1-output-4.png"
+src="readme_media/README_files/figure-commonmark/fig-real-world-flubot-detection-1-output-4.png"
 id="fig-real-world-flubot-detection-1-2"
 alt="Figure 24: sensitivity 0.9" />
 
@@ -729,6 +723,6 @@ $\rho(a)$ plot for clean and infected instances (B2 period)
 
 # References
 
-  - Grill, Martin, Ivan Nikolaev, Veronica Valeros, and Martin Rehak. 2015. “Detecting DGA Malware Using NetFlow.” In 2015 IFIP/IEEE International Symposium on Integrated Network Management (IM), 1304–9. https://doi.org/10.1109/INM.2015.7140486.
-  - Jeřábek, Kamil, Karel Hynek, Tomáš Čejka, and Ondřej Ryšavý. 2022. “Collection of Datasets with DNS over HTTPS Traffic.” Data in Brief 42 (June): 108310. https://doi.org/10.1016/j.dib.2022.108310.
+<div id="refs">
 
+</div>
