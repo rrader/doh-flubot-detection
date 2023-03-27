@@ -340,14 +340,14 @@
     "href": "flubot-detection-2-overview.html#log",
     "title": "19  Design and log of experiment 2",
     "section": "19.3 Log",
-    "text": "19.3 Log\n\n\n\n\n\n\n\n\n\nTimestamp\nTime from start (minutes)\nDuration\nLog\n\n\n\n\n11:00:02 AM\n0\n0\nB1: Start data collection (ipfixprobe and logger)\n\n\n11:00:59 AM\n1\n1\nStarted traffic2.py\n\n\n11:17:15 AM\n17\n16\nStop data collection, save result to v7_1.csv\n\n\n11:36:11 AM\n36\n19\nStop traffic2.py, save v7_exp_1.log\n\n\n11:44:50 AM\n45\n9\nB2: Start data collection again (ipfixprobe and logger)\n\n\n11:46:00 AM\n46\n1\nStarted traffic2.py\n\n\n11:56:59 AM\n57\n11\nStarted infect.sh\n\n\n12:14:18 PM\n74\n17\nStop data collection, save result to v7_2.csv\n\n\n12:14:31 PM\n74\n0\nStop traffic2.py, save v7_exp_2.log"
+    "text": "19.3 Log\n\n\n\n\n\n\n\n\n\nTimestamp\nTime (minutes)\nDuration\nLog\n\n\n\n\n9:34:00 AM\n0\n0\nStarted traffic2.py\n\n\n9:34:39 AM\n1\n1\nB1: Start data collection (ipfixprobe and logger)\n\n\n10:14:44 AM\n41\n40\nStop data collection, save result to v9_1.csv\n\n\n11:11:34 AM\n98\n57\nB2: Start data collection again (ipfixprobe and logger)\n\n\n12:13:30 PM\n160\n62\nStarted infect.sh\n\n\n1:15:11 PM\n221\n62\nStop data collection, save result to v9_2.csv\n\n\n1:15:34 PM\n222\n0\nStop traffic2.py, save v8_exp.log"
   },
   {
     "objectID": "flubot-detection-2-overview.html#artifacts",
     "href": "flubot-detection-2-overview.html#artifacts",
     "title": "19  Design and log of experiment 2",
     "section": "19.4 Artifacts",
-    "text": "19.4 Artifacts\n\nB1 part of traffic saved into v7_1.csv\nB2 part of traffic saved into v7_2.csv\ntraffic2.py log is saved in v7_exp_1.log and v7_exp_2.log (before and after infection)\nHigh-level log with timestamps of experiment is saved in v7_log.csv"
+    "text": "19.4 Artifacts\n\nB1 part of traffic saved into v9_1.csv\nB2 part of traffic saved into v9_2.csv\ntraffic2.py log is saved in v9_exp.log\nHigh-level log with timestamps of experiment is saved in v9_log.csv"
   },
   {
     "objectID": "notebooks/analyze-collected-dataset-2.html#real-world-scenario-experiment-with-flubot-infected-machine",

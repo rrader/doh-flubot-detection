@@ -489,25 +489,22 @@ collecting data in two (B1 and B2) periods (see
 
 ## Log
 
-| Timestamp   | Time from start (minutes) | Duration | Log                                                     |
-|-------------|---------------------------|----------|---------------------------------------------------------|
-| 11:00:02 AM | 0                         | 0        | B1: Start data collection (ipfixprobe and logger)       |
-| 11:00:59 AM | 1                         | 1        | Started traffic2.py                                     |
-| 11:17:15 AM | 17                        | 16       | Stop data collection, save result to v7_1.csv           |
-| 11:36:11 AM | 36                        | 19       | Stop traffic2.py, save v7_exp_1.log                     |
-| 11:44:50 AM | 45                        | 9        | B2: Start data collection again (ipfixprobe and logger) |
-| 11:46:00 AM | 46                        | 1        | Started traffic2.py                                     |
-| 11:56:59 AM | 57                        | 11       | Started infect.sh                                       |
-| 12:14:18 PM | 74                        | 17       | Stop data collection, save result to v7_2.csv           |
-| 12:14:31 PM | 74                        | 0        | Stop traffic2.py, save v7_exp_2.log                     |
+| Timestamp   | Time (minutes) | Duration | Log                                                     |
+|-------------|----------------|----------|---------------------------------------------------------|
+| 9:34:00 AM  | 0              | 0        | Started traffic2.py                                     |
+| 9:34:39 AM  | 1              | 1        | B1: Start data collection (ipfixprobe and logger)       |
+| 10:14:44 AM | 41             | 40       | Stop data collection, save result to v9_1.csv           |
+| 11:11:34 AM | 98             | 57       | B2: Start data collection again (ipfixprobe and logger) |
+| 12:13:30 PM | 160            | 62       | Started infect.sh                                       |
+| 1:15:11 PM  | 221            | 62       | Stop data collection, save result to v9_2.csv           |
+| 1:15:34 PM  | 222            | 0        | Stop traffic2.py, save v8_exp.log                       |
 
 ## Artifacts
 
-- B1 part of traffic saved into `v7_1.csv`
-- B2 part of traffic saved into `v7_2.csv`
-- `traffic2.py` log is saved in `v7_exp_1.log` and `v7_exp_2.log`
-  (before and after infection)
-- High-level log with timestamps of experiment is saved in `v7_log.csv`
+- B1 part of traffic saved into `v9_1.csv`
+- B2 part of traffic saved into `v9_2.csv`
+- `traffic2.py` log is saved in `v9_exp.log`
+- High-level log with timestamps of experiment is saved in `v9_log.csv`
 
 # Results
 
@@ -731,7 +728,6 @@ $\rho(a)$ plot for clean and infected instances (B2 period)
 </div>
 
 # References
-
 
   - Grill, Martin, Ivan Nikolaev, Veronica Valeros, and Martin Rehak. 2015. “Detecting DGA Malware Using NetFlow.” In 2015 IFIP/IEEE International Symposium on Integrated Network Management (IM), 1304–9. https://doi.org/10.1109/INM.2015.7140486.
   - Jeřábek, Kamil, Karel Hynek, Tomáš Čejka, and Ondřej Ryšavý. 2022. “Collection of Datasets with DNS over HTTPS Traffic.” Data in Brief 42 (June): 108310. https://doi.org/10.1016/j.dib.2022.108310.
