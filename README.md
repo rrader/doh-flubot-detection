@@ -723,6 +723,6 @@ $\rho(a)$ plot for clean and infected instances (B2 period)
 
 # References
 
-<div id="refs">
+  - Grill, Martin, Ivan Nikolaev, Veronica Valeros, and Martin Rehak. 2015. “Detecting DGA Malware Using NetFlow.” In 2015 IFIP/IEEE International Symposium on Integrated Network Management (IM), 1304–9. https://doi.org/10.1109/INM.2015.7140486.
+  - Jeřábek, Kamil, Karel Hynek, Tomáš Čejka, and Ondřej Ryšavý. 2022. “Collection of Datasets with DNS over HTTPS Traffic.” Data in Brief 42 (June): 108310. https://doi.org/10.1016/j.dib.2022.108310.
 
-</div>
