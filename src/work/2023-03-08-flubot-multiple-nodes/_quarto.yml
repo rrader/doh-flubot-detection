@@ -1,0 +1,58 @@
+project:
+  type: book
+
+
+book:
+  title: "2023-03-08-flubot-multiple-nodes"
+  author: "Rader Roman, Jeřábek Kamil, Ryšavý Ondřej"
+  date: "3/8/2023"
+  chapters:
+    - index.qmd
+    - part: collect-data.qmd
+      chapters:
+        - experiment.qmd
+        - notebooks/analyze-collected-dataset.ipynb
+    - part: train-model.qmd
+      chapters:
+        - train-model-plan.qmd
+        - notebooks/sample-Jerabek2022-dataset.ipynb
+        - notebooks/cached-preprocessing-and-labeling.ipynb
+        - notebooks/build-models.ipynb
+        - notebooks/choose-model.ipynb
+        - notebooks/choose-threshold.ipynb
+    - part: flubot-detection.qmd
+      chapters:
+        - flubot-detection-overview.qmd
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-0-0-0-0.ipynb
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.ipynb
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.ipynb
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.ipynb
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.ipynb
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-0-0-0.ipynb
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-4-0-0.ipynb
+        - notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-1-4-1-4.ipynb
+    - part: flubot-detection-2.qmd
+      chapters:
+        - flubot-detection-2-overview.qmd
+        - notebooks/analyze-collected-dataset-2.ipynb
+        - notebooks/flubot-detection-second.ipynb
+    - summary.qmd
+    - references.qmd
+  appendices:
+    - appendices.qmd
+    - appendices2.qmd
+
+bibliography: MyLibrary.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+    include-in-header: 
+      text: |
+        \usepackage{fvextra}
+        \DefineVerbatimEnvironment{Highlighting}{Verbatim}{breaklines,commandchars=\\\{\}}
+
+filters:
+  - include-code-files

@@ -1,0 +1,100 @@
+# Training models {#sec-training}
+
+## Training data
+
+Model training is done on the DoH traffic collection described in @Jerabek2022Collection
+
+ - [https://zenodo.org/record/6024914#.ZAcru-xBzaV](https://zenodo.org/record/6024914#.ZAcru-xBzaV)
+
+This dataset contains a large collection of generated DoH data from Chrome and Firefox browsers using GET and POST methods on multiple DoH public resolvers.
+
+## Training process overview
+
+Models training is done in the following steps:
+
+ - Cacheable processing
+   - Filter HTTPS traffic
+   - Parse packet lengths and timestamps array fields
+   - Split packet lengths and timestamps arrays by outgoing and incoming directions
+   - Calculate inter-packet duration from the timesamps
+   - Label flows (boolean IsDoH field)
+ - PreProcessing
+   - Calculate stats (mean, variance, stddev) on 
+     - Packet lengths (all, incoming, outgoing)
+     - Inter-packet duration (all, incoming, outgoing)
+   - Normalization of the feature fields
+   - Split features and label columns
+
+Feature fields (1 and -1 represent outgoing and incoming packets respectively):
+
+ - uint16* PPI_PKT_LENGTHS_stddev
+ - uint16* PPI_PKT_LENGTHS_mean
+ - uint16* PPI_PKT_LENGTHS_var
+ - uint16* PPI_PKT_LENGTHS_1_stddev
+ - uint16* PPI_PKT_LENGTHS_1_mean
+ - uint16* PPI_PKT_LENGTHS_1_var
+ - uint16* PPI_PKT_LENGTHS_-1_stddev
+ - uint16* PPI_PKT_LENGTHS_-1_mean
+ - uint16* PPI_PKT_LENGTHS_-1_var
+ - PPI_PKT_INTERVALS_stddev
+ - PPI_PKT_INTERVALS_mean
+ - PPI_PKT_INTERVALS_var
+ - PPI_PKT_INTERVALS_1_stddev
+ - PPI_PKT_INTERVALS_1_mean
+ - PPI_PKT_INTERVALS_1_var
+ - PPI_PKT_INTERVALS-1_stddev
+ - PPI_PKT_INTERVALS-1_mean
+ - PPI_PKT_INTERVALS-1_var
+
+## Data preparation diagrams
+
+Data preparation is done in two steps:
+ - Cacheable processing (non-parametric processing) @fig-cp
+ - Preprocessing (applies hyperparameters) @fig-pp
+
+![Cachable processing](imgs/cp.png){#fig-cp}
+
+![Preprocessing](imgs/pp.png){#fig-pp}
+
+## Hyperparameters selection
+
+1. Normalization
+
+The hypothesis is that the normalization of statistical features separately on training and test (production) set will allow us reduce the concept drift in case these datasets were recorded in different networks (see @sec-scaler).
+
+2. Skip first packets
+
+(TODO: reference)
+
+Skipping first few packets should reduce the importrance of TLS handshake which may be very similar for DoH and non-DoH HTTPS traffic, and focus the detection on the traffic content.
+
+Other technique which is tested in this experiment is applying weights on the features, instead of just skipping them (in this case skipping the packet equal to 0.0 weight).
+
+Weight for N packets is calculated linearly increasing:
+
+ - from $0.1$ for the 1 packet 
+ - to $1.0$ for N+1's packet.
+
+For example, for skip=1, weight=2 and length of packets array=7 the weights will be the following:
+
+|id    |1    |2      |3     |4     |5    |6    |7  |
+|------|-----|-------|------|------|-----|-----|---|
+|action|skip | weight|weight|-     |-    |-    |-  |
+|weight| 0.  | 0.1   | 0.55 | 1.   | 1.  | 1.  | 1.|
+
+Then we calculate the weighted mean, weighted variance and weighted standard deviation for the features:
+
+ - All packet lengths: `uint16* PPI_PKT_LENGTHS`
+ - Outgoing packet lengths: `uint16* PPI_PKT_LENGTHS_1`
+ - Incoming packet lengths: `uint16* PPI_PKT_LENGTHS_-1`
+ - All inter-packet durations: `PPI_PKT_INTERVALS`
+ - Outgoing inter-packet durations: `PPI_PKT_INTERVALS_1`
+ - Incoming inter-packet durations: `PPI_PKT_INTERVALS-1`
+
+This way we have following hyperparameters represented as a tuple of (norm, A, B, C, D):
+
+ - normalization (on/off)
+ - skip A first packets for inter-packet duration statistics
+ - skip B first packets for packet sizes statistics
+ - apply weight on C first packets for inter-packet duration statistics
+ - apply weight on D first packets for sizes statistics

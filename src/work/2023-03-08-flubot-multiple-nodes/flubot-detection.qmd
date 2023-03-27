@@ -1,0 +1,9 @@
+# Experiment 1: Malware detection
+
+In this part we run the FluBot detection for Top 3 normed and Top 3 unnormed models, trying 4 model sensitivities in each run.
+
+In this experiment we have 3 Android x86 machines:
+
+ - 192.168.2.217 - machine without benign traffic, infected with FluBot
+ - 192.168.2.149 - clean machine with DoH in Chrome enabled
+ - 192.168.2.249 - control machine with plaintext DNS configured

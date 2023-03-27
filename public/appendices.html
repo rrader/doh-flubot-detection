@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.290">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2023-03-08-flubot-multiple-nodes - Appendix A — Library</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./appendices2.html" rel="next">
+<link href="./references.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./appendices.html">Appendices</a></li><li class="breadcrumb-item"><a href="./appendices.html"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Library</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">2023-03-08-flubot-multiple-nodes</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./collect-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: "Clean room" with multiple Androids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Design and log of experiment 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/analyze-collected-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analyze generated dataset</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./train-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train DoH detection models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./train-model-plan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Training models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/sample-Jerabek2022-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sample learning dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/cached-preprocessing-and-labeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Label learning dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/build-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Build models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/choose-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Choose model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/choose-threshold.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Selecting threshold</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./flubot-detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: Malware detection</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./flubot-detection-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Malware detection overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-0-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-0-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-2-4)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-1-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-2-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-4-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-2-4-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-1-4-1-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-1-4-1-4)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="./flubot-detection-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 2: Real-world scenario</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./flubot-detection-2-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Design and log of experiment 2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/analyze-collected-dataset-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Analyze generated dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./notebooks/flubot-detection-second.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Detect malware</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Library</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./appendices2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Scripts</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Appendix A — Library</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p><code>notebooks/detect_common.py</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> modin.pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="im">import</span> dateutil</span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> PolynomialFeatures, normalize, RobustScaler</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="im">from</span> joblib <span class="im">import</span> dump, load</span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>HYPERPARAMS <span class="op">=</span> [</span>
+<span id="cb1-12"><a href="#cb1-12"></a>    [<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb1-15"><a href="#cb1-15"></a>    [<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb1-16"><a href="#cb1-16"></a>    [<span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb1-17"><a href="#cb1-17"></a>    [<span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb1-18"><a href="#cb1-18"></a>    [<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb1-19"><a href="#cb1-19"></a>    [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>], </span>
+<span id="cb1-20"><a href="#cb1-20"></a>    [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>],</span>
+<span id="cb1-21"><a href="#cb1-21"></a></span>
+<span id="cb1-22"><a href="#cb1-22"></a>    [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>],</span>
+<span id="cb1-23"><a href="#cb1-23"></a>    [<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">0</span>],</span>
+<span id="cb1-24"><a href="#cb1-24"></a>    [<span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">0</span>],</span>
+<span id="cb1-25"><a href="#cb1-25"></a>    [<span class="dv">6</span>, <span class="dv">0</span>, <span class="dv">6</span>, <span class="dv">0</span>],</span>
+<span id="cb1-26"><a href="#cb1-26"></a>    [<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">4</span>],</span>
+<span id="cb1-27"><a href="#cb1-27"></a>    [<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">4</span>],</span>
+<span id="cb1-28"><a href="#cb1-28"></a>    [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">4</span>],</span>
+<span id="cb1-29"><a href="#cb1-29"></a>]</span>
+<span id="cb1-30"><a href="#cb1-30"></a></span>
+<span id="cb1-31"><a href="#cb1-31"></a></span>
+<span id="cb1-32"><a href="#cb1-32"></a><span class="kw">def</span> enum_csv(path):</span>
+<span id="cb1-33"><a href="#cb1-33"></a>    csv_folder <span class="op">=</span> Path(path)</span>
+<span id="cb1-34"><a href="#cb1-34"></a>    <span class="cf">for</span> p <span class="kw">in</span> csv_folder.glob(<span class="st">'**/*.csv'</span>):</span>
+<span id="cb1-35"><a href="#cb1-35"></a>        <span class="cf">yield</span> p</span>
+<span id="cb1-36"><a href="#cb1-36"></a></span>
+<span id="cb1-37"><a href="#cb1-37"></a></span>
+<span id="cb1-38"><a href="#cb1-38"></a><span class="kw">def</span> ipfix_list_to_array(series, convert<span class="op">=</span><span class="bu">int</span>, limit<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-39"><a href="#cb1-39"></a>    <span class="cf">return</span> series.<span class="bu">map</span>(</span>
+<span id="cb1-40"><a href="#cb1-40"></a>        <span class="kw">lambda</span> val: np.array([</span>
+<span id="cb1-41"><a href="#cb1-41"></a>            convert(x) </span>
+<span id="cb1-42"><a href="#cb1-42"></a>            <span class="cf">for</span> x <span class="kw">in</span> val.strip(<span class="st">"[]"</span>).split(<span class="st">"|"</span>) <span class="cf">if</span> x <span class="op">!=</span> <span class="st">''</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a>        ])[:limit]</span>
+<span id="cb1-44"><a href="#cb1-44"></a>    )</span>
+<span id="cb1-45"><a href="#cb1-45"></a></span>
+<span id="cb1-46"><a href="#cb1-46"></a></span>
+<span id="cb1-47"><a href="#cb1-47"></a><span class="kw">def</span> direction_sizes_filter(direction):</span>
+<span id="cb1-48"><a href="#cb1-48"></a>    <span class="cf">return</span> <span class="kw">lambda</span> x: np.array([</span>
+<span id="cb1-49"><a href="#cb1-49"></a>        sz</span>
+<span id="cb1-50"><a href="#cb1-50"></a>        <span class="cf">for</span> sz, dir_, <span class="kw">in</span> <span class="bu">zip</span>(x[<span class="dv">0</span>], x[<span class="dv">1</span>])</span>
+<span id="cb1-51"><a href="#cb1-51"></a>        <span class="cf">if</span> dir_ <span class="op">==</span> direction</span>
+<span id="cb1-52"><a href="#cb1-52"></a>    ])</span>
+<span id="cb1-53"><a href="#cb1-53"></a></span>
+<span id="cb1-54"><a href="#cb1-54"></a></span>
+<span id="cb1-55"><a href="#cb1-55"></a><span class="kw">def</span> millis_diffs(arr, pkts_limit):  <span class="co"># Zhan 2022 discards total bytes but uses Time intervals</span></span>
+<span id="cb1-56"><a href="#cb1-56"></a>    times <span class="op">=</span> ipfix_list_to_array(arr, dateutil.parser.parse, limit<span class="op">=</span>pkts_limit<span class="op">+</span><span class="dv">1</span>)</span>
+<span id="cb1-57"><a href="#cb1-57"></a>    <span class="cf">return</span> times.<span class="bu">apply</span>(<span class="kw">lambda</span> arr: np.array([(b <span class="op">-</span> a).total_seconds() <span class="op">*</span> <span class="dv">1000</span> <span class="cf">for</span> a, b <span class="kw">in</span> <span class="bu">zip</span>(arr, arr[<span class="dv">1</span>:])]))</span>
+<span id="cb1-58"><a href="#cb1-58"></a></span>
+<span id="cb1-59"><a href="#cb1-59"></a></span>
+<span id="cb1-60"><a href="#cb1-60"></a><span class="kw">def</span> get_doh_ips(path_doh_ips):</span>
+<span id="cb1-61"><a href="#cb1-61"></a>    doh_ips_df <span class="op">=</span> pd.read_csv(path_doh_ips)</span>
+<span id="cb1-62"><a href="#cb1-62"></a>    <span class="cf">return</span> doh_ips_df.iloc[:,<span class="dv">0</span>].to_list()</span>
+<span id="cb1-63"><a href="#cb1-63"></a></span>
+<span id="cb1-64"><a href="#cb1-64"></a></span>
+<span id="cb1-65"><a href="#cb1-65"></a><span class="kw">def</span> stat_funcs(skip, weighted_num):</span>
+<span id="cb1-66"><a href="#cb1-66"></a>    <span class="kw">def</span> weights(a):</span>
+<span id="cb1-67"><a href="#cb1-67"></a>        n <span class="op">=</span> <span class="bu">len</span>(a)</span>
+<span id="cb1-68"><a href="#cb1-68"></a>        zeros <span class="op">=</span> <span class="bu">min</span>(skip, n)</span>
+<span id="cb1-69"><a href="#cb1-69"></a>        weights <span class="op">=</span> <span class="bu">min</span>(n <span class="op">-</span> zeros, weighted_num <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb1-70"><a href="#cb1-70"></a>        ones <span class="op">=</span> <span class="bu">max</span>(n <span class="op">-</span> zeros <span class="op">-</span> weights, <span class="dv">0</span>)</span>
+<span id="cb1-71"><a href="#cb1-71"></a>        <span class="cf">return</span> np.concatenate([</span>
+<span id="cb1-72"><a href="#cb1-72"></a>            np.zeros(zeros),</span>
+<span id="cb1-73"><a href="#cb1-73"></a>            np.linspace(<span class="fl">0.1</span>, <span class="dv">1</span>, weights),</span>
+<span id="cb1-74"><a href="#cb1-74"></a>            np.ones(ones),</span>
+<span id="cb1-75"><a href="#cb1-75"></a>        ])</span>
+<span id="cb1-76"><a href="#cb1-76"></a></span>
+<span id="cb1-77"><a href="#cb1-77"></a>    <span class="kw">def</span> var(a__mean):</span>
+<span id="cb1-78"><a href="#cb1-78"></a>        a, average <span class="op">=</span> np.array(a__mean[<span class="dv">0</span>]), a__mean[<span class="dv">1</span>]</span>
+<span id="cb1-79"><a href="#cb1-79"></a>        w <span class="op">=</span> weights(a)</span>
+<span id="cb1-80"><a href="#cb1-80"></a>        <span class="cf">return</span> np.average((a<span class="op">-</span>average)<span class="op">**</span><span class="dv">2</span>, weights<span class="op">=</span>w) <span class="cf">if</span> np.<span class="bu">sum</span>(w) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="fl">0.0</span></span>
+<span id="cb1-81"><a href="#cb1-81"></a></span>
+<span id="cb1-82"><a href="#cb1-82"></a>    <span class="kw">def</span> mean(a):</span>
+<span id="cb1-83"><a href="#cb1-83"></a>        w <span class="op">=</span> weights(a)</span>
+<span id="cb1-84"><a href="#cb1-84"></a>        <span class="cf">return</span> np.average(a, weights<span class="op">=</span>w) <span class="cf">if</span> np.<span class="bu">sum</span>(w) <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="fl">0.0</span></span>
+<span id="cb1-85"><a href="#cb1-85"></a>    <span class="cf">return</span> mean, var</span>
+<span id="cb1-86"><a href="#cb1-86"></a></span>
+<span id="cb1-87"><a href="#cb1-87"></a></span>
+<span id="cb1-88"><a href="#cb1-88"></a><span class="kw">def</span> fields_stats(dfx, fields, skip<span class="op">=</span><span class="dv">0</span>, weighted_num<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb1-89"><a href="#cb1-89"></a>    mean, var <span class="op">=</span> stat_funcs(skip, weighted_num)</span>
+<span id="cb1-90"><a href="#cb1-90"></a></span>
+<span id="cb1-91"><a href="#cb1-91"></a>    <span class="cf">for</span> field <span class="kw">in</span> fields:</span>
+<span id="cb1-92"><a href="#cb1-92"></a>        dfx[<span class="ss">f"</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">_mean"</span>] <span class="op">=</span> dfx[field].<span class="bu">apply</span>(mean)</span>
+<span id="cb1-93"><a href="#cb1-93"></a>        dfx[<span class="ss">f"</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">_var"</span>] <span class="op">=</span> dfx[[field, <span class="ss">f"</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">_mean"</span>]].<span class="bu">apply</span>(var, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb1-94"><a href="#cb1-94"></a>        dfx[<span class="ss">f"</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">_stddev"</span>] <span class="op">=</span> np.sqrt(dfx[<span class="ss">f"</span><span class="sc">{</span>field<span class="sc">}</span><span class="ss">_var"</span>])</span>
+<span id="cb1-95"><a href="#cb1-95"></a>        </span>
+<span id="cb1-96"><a href="#cb1-96"></a>    <span class="cf">return</span> dfx</span>
+<span id="cb1-97"><a href="#cb1-97"></a></span>
+<span id="cb1-98"><a href="#cb1-98"></a></span>
+<span id="cb1-99"><a href="#cb1-99"></a><span class="kw">def</span> filter_significant_flows(dfx):</span>
+<span id="cb1-100"><a href="#cb1-100"></a>    <span class="cf">return</span> dfx[</span>
+<span id="cb1-101"><a href="#cb1-101"></a>        (dfx[<span class="st">"uint32 PACKETS"</span>] <span class="op">&gt;</span> <span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb1-102"><a href="#cb1-102"></a>        (dfx[<span class="st">"uint32 PACKETS_REV"</span>] <span class="op">&gt;</span> <span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb1-103"><a href="#cb1-103"></a>        (dfx[<span class="st">"uint16* PPI_PKT_LENGTHS"</span>].<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">&gt;</span> <span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb1-104"><a href="#cb1-104"></a>        (dfx[<span class="st">"uint16* PPI_PKT_LENGTHS_1"</span>].<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">&gt;</span> <span class="dv">2</span>) <span class="op">&amp;</span></span>
+<span id="cb1-105"><a href="#cb1-105"></a>        (dfx[<span class="st">"uint16* PPI_PKT_LENGTHS_-1"</span>].<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">&gt;</span> <span class="dv">2</span>)</span>
+<span id="cb1-106"><a href="#cb1-106"></a>    ]</span>
+<span id="cb1-107"><a href="#cb1-107"></a></span>
+<span id="cb1-108"><a href="#cb1-108"></a></span>
+<span id="cb1-109"><a href="#cb1-109"></a><span class="kw">class</span> CacheableProcessing:</span>
+<span id="cb1-110"><a href="#cb1-110"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, len_pkts_limit, times_pkts_limit, doh_ips<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-111"><a href="#cb1-111"></a>        <span class="va">self</span>._len_pkts_limit <span class="op">=</span> len_pkts_limit</span>
+<span id="cb1-112"><a href="#cb1-112"></a>        <span class="va">self</span>._times_pkts_limit <span class="op">=</span> times_pkts_limit</span>
+<span id="cb1-113"><a href="#cb1-113"></a>        <span class="va">self</span>._doh_ips <span class="op">=</span> doh_ips</span>
+<span id="cb1-114"><a href="#cb1-114"></a></span>
+<span id="cb1-115"><a href="#cb1-115"></a>        <span class="va">self</span>._is_labeled <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-116"><a href="#cb1-116"></a>        <span class="va">self</span>._is_filtered <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-117"><a href="#cb1-117"></a>        <span class="va">self</span>._is_processed <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-118"><a href="#cb1-118"></a>    </span>
+<span id="cb1-119"><a href="#cb1-119"></a>    <span class="kw">def</span> _reversed_rows(<span class="va">self</span>, dfx):</span>
+<span id="cb1-120"><a href="#cb1-120"></a>        reversed_rows <span class="op">=</span> dfx[<span class="st">"uint16 SRC_PORT"</span>] <span class="op">&lt;</span> <span class="dv">1024</span></span>
+<span id="cb1-121"><a href="#cb1-121"></a>        dfx <span class="op">=</span> dfx[<span class="op">~</span>reversed_rows]  <span class="co"># ignore reversed rows</span></span>
+<span id="cb1-122"><a href="#cb1-122"></a>        <span class="cf">return</span> dfx</span>
+<span id="cb1-123"><a href="#cb1-123"></a>    </span>
+<span id="cb1-124"><a href="#cb1-124"></a>    <span class="kw">def</span> _filter_out_icmp(<span class="va">self</span>, dfx):</span>
+<span id="cb1-125"><a href="#cb1-125"></a>        <span class="cf">return</span> dfx[(dfx[<span class="st">"uint8 PROTOCOL"</span>] <span class="op">!=</span> <span class="dv">58</span>) <span class="op">&amp;</span> (dfx[<span class="st">"uint8 PROTOCOL"</span>] <span class="op">!=</span> <span class="dv">1</span>)]  <span class="co"># no ICMPv6 and ICMP</span></span>
+<span id="cb1-126"><a href="#cb1-126"></a></span>
+<span id="cb1-127"><a href="#cb1-127"></a>    <span class="kw">def</span> _filter_443(<span class="va">self</span>, dfx):</span>
+<span id="cb1-128"><a href="#cb1-128"></a>        dfx <span class="op">=</span> dfx[dfx[<span class="st">"uint16 DST_PORT"</span>] <span class="op">==</span> <span class="dv">443</span>]  <span class="co"># filter HTTPS</span></span>
+<span id="cb1-129"><a href="#cb1-129"></a>        <span class="va">self</span>._is_filtered <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-130"><a href="#cb1-130"></a>        <span class="cf">return</span> dfx</span>
+<span id="cb1-131"><a href="#cb1-131"></a></span>
+<span id="cb1-132"><a href="#cb1-132"></a>    <span class="kw">def</span> clean(<span class="va">self</span>, df):</span>
+<span id="cb1-133"><a href="#cb1-133"></a>        dfx <span class="op">=</span> df.copy()</span>
+<span id="cb1-134"><a href="#cb1-134"></a>        dfx <span class="op">=</span> <span class="va">self</span>._filter_out_icmp(dfx)</span>
+<span id="cb1-135"><a href="#cb1-135"></a>        dfx <span class="op">=</span> <span class="va">self</span>._reversed_rows(dfx)</span>
+<span id="cb1-136"><a href="#cb1-136"></a>        <span class="cf">return</span> dfx</span>
+<span id="cb1-137"><a href="#cb1-137"></a>    </span>
+<span id="cb1-138"><a href="#cb1-138"></a>    <span class="kw">def</span> _pkt_lengths(<span class="va">self</span>, dfx, pkts_limit):</span>
+<span id="cb1-139"><a href="#cb1-139"></a>        dfx[<span class="st">"uint16* PPI_PKT_LENGTHS"</span>] <span class="op">=</span> ipfix_list_to_array(dfx[<span class="st">"uint16* PPI_PKT_LENGTHS"</span>], limit<span class="op">=</span>pkts_limit)</span>
+<span id="cb1-140"><a href="#cb1-140"></a>        dfx[<span class="st">"int8* PPI_PKT_DIRECTIONS"</span>] <span class="op">=</span> ipfix_list_to_array(dfx[<span class="st">"int8* PPI_PKT_DIRECTIONS"</span>], limit<span class="op">=</span>pkts_limit)</span>
+<span id="cb1-141"><a href="#cb1-141"></a></span>
+<span id="cb1-142"><a href="#cb1-142"></a>        dfx[<span class="st">"uint16* PPI_PKT_LENGTHS_1"</span>] <span class="op">=</span> dfx[[<span class="st">"uint16* PPI_PKT_LENGTHS"</span>, <span class="st">"int8* PPI_PKT_DIRECTIONS"</span>]].<span class="bu">apply</span>(</span>
+<span id="cb1-143"><a href="#cb1-143"></a>            direction_sizes_filter(<span class="dv">1</span>), axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb1-144"><a href="#cb1-144"></a>        )</span>
+<span id="cb1-145"><a href="#cb1-145"></a>        dfx[<span class="st">"uint16* PPI_PKT_LENGTHS_-1"</span>] <span class="op">=</span> dfx[[<span class="st">"uint16* PPI_PKT_LENGTHS"</span>, <span class="st">"int8* PPI_PKT_DIRECTIONS"</span>]].<span class="bu">apply</span>(</span>
+<span id="cb1-146"><a href="#cb1-146"></a>            direction_sizes_filter(<span class="op">-</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb1-147"><a href="#cb1-147"></a>        )</span>
+<span id="cb1-148"><a href="#cb1-148"></a>        <span class="cf">return</span> dfx</span>
+<span id="cb1-149"><a href="#cb1-149"></a></span>
+<span id="cb1-150"><a href="#cb1-150"></a>    <span class="kw">def</span> _pkt_times(<span class="va">self</span>, dfx, pkts_limit):</span>
+<span id="cb1-151"><a href="#cb1-151"></a>        dfx[<span class="st">"PPI_PKT_INTERVALS"</span>] <span class="op">=</span> millis_diffs(dfx[<span class="st">"time* PPI_PKT_TIMES"</span>], pkts_limit)</span>
+<span id="cb1-152"><a href="#cb1-152"></a></span>
+<span id="cb1-153"><a href="#cb1-153"></a>        dfx[<span class="st">"PPI_PKT_INTERVALS_1"</span>] <span class="op">=</span> dfx[[<span class="st">"PPI_PKT_INTERVALS"</span>, <span class="st">"int8* PPI_PKT_DIRECTIONS"</span>]].<span class="bu">apply</span>(</span>
+<span id="cb1-154"><a href="#cb1-154"></a>            direction_sizes_filter(<span class="dv">1</span>), axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb1-155"><a href="#cb1-155"></a>        )</span>
+<span id="cb1-156"><a href="#cb1-156"></a>        dfx[<span class="st">"PPI_PKT_INTERVALS-1"</span>] <span class="op">=</span> dfx[[<span class="st">"PPI_PKT_INTERVALS"</span>, <span class="st">"int8* PPI_PKT_DIRECTIONS"</span>]].<span class="bu">apply</span>(</span>
+<span id="cb1-157"><a href="#cb1-157"></a>            direction_sizes_filter(<span class="op">-</span><span class="dv">1</span>), axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb1-158"><a href="#cb1-158"></a>        )</span>
+<span id="cb1-159"><a href="#cb1-159"></a>        <span class="cf">return</span> dfx</span>
+<span id="cb1-160"><a href="#cb1-160"></a></span>
+<span id="cb1-161"><a href="#cb1-161"></a>    <span class="kw">def</span> _label_dataset(<span class="va">self</span>, dfx):</span>
+<span id="cb1-162"><a href="#cb1-162"></a>        dfx[<span class="st">"IsDoH"</span>] <span class="op">=</span> (dfx[<span class="st">"ipaddr DST_IP"</span>].isin(<span class="va">self</span>._doh_ips) <span class="op">&amp;</span> (dfx[<span class="st">"uint16 DST_PORT"</span>] <span class="op">==</span> <span class="dv">443</span>))</span>
+<span id="cb1-163"><a href="#cb1-163"></a>        <span class="va">self</span>._is_labeled <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-164"><a href="#cb1-164"></a>        <span class="cf">return</span> dfx</span>
+<span id="cb1-165"><a href="#cb1-165"></a></span>
+<span id="cb1-166"><a href="#cb1-166"></a>    <span class="kw">def</span> load(<span class="va">self</span>, stored_df_file):</span>
+<span id="cb1-167"><a href="#cb1-167"></a>        <span class="cf">if</span> stored_df_file <span class="kw">and</span> os.path.exists(stored_df_file):</span>
+<span id="cb1-168"><a href="#cb1-168"></a>            <span class="va">self</span>._df <span class="op">=</span> pd.read_json(stored_df_file).sort_index()</span>
+<span id="cb1-169"><a href="#cb1-169"></a>            <span class="va">self</span>._is_processed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-170"><a href="#cb1-170"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb1-171"><a href="#cb1-171"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb1-172"><a href="#cb1-172"></a></span>
+<span id="cb1-173"><a href="#cb1-173"></a>    <span class="kw">def</span> store(<span class="va">self</span>, stored_df_file):</span>
+<span id="cb1-174"><a href="#cb1-174"></a>        <span class="va">self</span>._df.to_json(stored_df_file)</span>
+<span id="cb1-175"><a href="#cb1-175"></a></span>
+<span id="cb1-176"><a href="#cb1-176"></a>    <span class="kw">def</span> process(<span class="va">self</span>, df, stored_df_file):</span>
+<span id="cb1-177"><a href="#cb1-177"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.load(stored_df_file):</span>
+<span id="cb1-178"><a href="#cb1-178"></a>            dfx <span class="op">=</span> df.copy()</span>
+<span id="cb1-179"><a href="#cb1-179"></a>            dfx <span class="op">=</span> <span class="va">self</span>._reversed_rows(dfx)</span>
+<span id="cb1-180"><a href="#cb1-180"></a>            dfx <span class="op">=</span> <span class="va">self</span>._filter_443(dfx)</span>
+<span id="cb1-181"><a href="#cb1-181"></a>            dfx <span class="op">=</span> <span class="va">self</span>._pkt_lengths(dfx, <span class="va">self</span>._len_pkts_limit)</span>
+<span id="cb1-182"><a href="#cb1-182"></a>            dfx <span class="op">=</span> <span class="va">self</span>._pkt_times(dfx, <span class="va">self</span>._times_pkts_limit)</span>
+<span id="cb1-183"><a href="#cb1-183"></a></span>
+<span id="cb1-184"><a href="#cb1-184"></a>            <span class="cf">if</span> <span class="va">self</span>._doh_ips <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb1-185"><a href="#cb1-185"></a>                dfx <span class="op">=</span> <span class="va">self</span>._label_dataset(dfx)</span>
+<span id="cb1-186"><a href="#cb1-186"></a></span>
+<span id="cb1-187"><a href="#cb1-187"></a>            <span class="co"># dfx = dfx.reset_index(drop=True)</span></span>
+<span id="cb1-188"><a href="#cb1-188"></a>            <span class="va">self</span>._df <span class="op">=</span> dfx</span>
+<span id="cb1-189"><a href="#cb1-189"></a>            <span class="va">self</span>._is_processed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-190"><a href="#cb1-190"></a>            <span class="va">self</span>.store(stored_df_file)</span>
+<span id="cb1-191"><a href="#cb1-191"></a>        <span class="cf">return</span> <span class="va">self</span>._df</span>
+<span id="cb1-192"><a href="#cb1-192"></a></span>
+<span id="cb1-193"><a href="#cb1-193"></a></span>
+<span id="cb1-194"><a href="#cb1-194"></a><span class="kw">class</span> PreProcessing:</span>
+<span id="cb1-195"><a href="#cb1-195"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, norm<span class="op">=</span><span class="va">True</span>, l_skip<span class="op">=</span><span class="dv">0</span>, l_weights<span class="op">=</span><span class="dv">0</span>, t_skip<span class="op">=</span><span class="dv">0</span>, t_weights<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb1-196"><a href="#cb1-196"></a>        <span class="va">self</span>._df <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-197"><a href="#cb1-197"></a>        <span class="va">self</span>._df_f <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-198"><a href="#cb1-198"></a>        <span class="va">self</span>._df_l <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-199"><a href="#cb1-199"></a>        <span class="va">self</span>._is_processed <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-200"><a href="#cb1-200"></a></span>
+<span id="cb1-201"><a href="#cb1-201"></a>        <span class="va">self</span>._do_norm <span class="op">=</span> norm</span>
+<span id="cb1-202"><a href="#cb1-202"></a>        <span class="va">self</span>._scaler <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-203"><a href="#cb1-203"></a></span>
+<span id="cb1-204"><a href="#cb1-204"></a>        <span class="va">self</span>._l_skip <span class="op">=</span> l_skip</span>
+<span id="cb1-205"><a href="#cb1-205"></a>        <span class="va">self</span>._l_weights <span class="op">=</span> l_weights</span>
+<span id="cb1-206"><a href="#cb1-206"></a>        <span class="va">self</span>._t_skip <span class="op">=</span> t_skip</span>
+<span id="cb1-207"><a href="#cb1-207"></a>        <span class="va">self</span>._t_weights <span class="op">=</span> t_weights</span>
+<span id="cb1-208"><a href="#cb1-208"></a></span>
+<span id="cb1-209"><a href="#cb1-209"></a>    <span class="kw">def</span> _feature_fields(<span class="va">self</span>):</span>
+<span id="cb1-210"><a href="#cb1-210"></a>        base_feature_fields <span class="op">=</span> [</span>
+<span id="cb1-211"><a href="#cb1-211"></a>            <span class="st">"uint16* PPI_PKT_LENGTHS"</span>,</span>
+<span id="cb1-212"><a href="#cb1-212"></a>            <span class="st">"uint16* PPI_PKT_LENGTHS_1"</span>,</span>
+<span id="cb1-213"><a href="#cb1-213"></a>            <span class="st">"uint16* PPI_PKT_LENGTHS_-1"</span>,</span>
+<span id="cb1-214"><a href="#cb1-214"></a>        ]</span>
+<span id="cb1-215"><a href="#cb1-215"></a>        base_feature_fields <span class="op">+=</span> [  <span class="co"># interval features</span></span>
+<span id="cb1-216"><a href="#cb1-216"></a>            <span class="st">"PPI_PKT_INTERVALS"</span>,</span>
+<span id="cb1-217"><a href="#cb1-217"></a>            <span class="st">"PPI_PKT_INTERVALS_1"</span>,</span>
+<span id="cb1-218"><a href="#cb1-218"></a>            <span class="st">"PPI_PKT_INTERVALS-1"</span>,</span>
+<span id="cb1-219"><a href="#cb1-219"></a>        ]</span>
+<span id="cb1-220"><a href="#cb1-220"></a></span>
+<span id="cb1-221"><a href="#cb1-221"></a>        base_feature_fields_stats <span class="op">=</span> [<span class="ss">f"</span><span class="sc">{</span>field<span class="sc">}{</span>suffix<span class="sc">}</span><span class="ss">"</span> <span class="cf">for</span> field <span class="kw">in</span> base_feature_fields <span class="cf">for</span> suffix <span class="kw">in</span> [<span class="st">"_stddev"</span>, <span class="st">"_mean"</span>, <span class="st">"_var"</span>]]</span>
+<span id="cb1-222"><a href="#cb1-222"></a>        add_feature_fields <span class="op">=</span> []</span>
+<span id="cb1-223"><a href="#cb1-223"></a></span>
+<span id="cb1-224"><a href="#cb1-224"></a>        feature_fields <span class="op">=</span> base_feature_fields_stats <span class="op">+</span> add_feature_fields</span>
+<span id="cb1-225"><a href="#cb1-225"></a>        <span class="cf">return</span> feature_fields</span>
+<span id="cb1-226"><a href="#cb1-226"></a></span>
+<span id="cb1-227"><a href="#cb1-227"></a>    <span class="at">@property</span></span>
+<span id="cb1-228"><a href="#cb1-228"></a>    <span class="kw">def</span> feature_fields(<span class="va">self</span>):</span>
+<span id="cb1-229"><a href="#cb1-229"></a>        <span class="cf">return</span> <span class="va">self</span>._feature_fields()</span>
+<span id="cb1-230"><a href="#cb1-230"></a></span>
+<span id="cb1-231"><a href="#cb1-231"></a>    <span class="kw">def</span> load(<span class="va">self</span>, stored_df_file):</span>
+<span id="cb1-232"><a href="#cb1-232"></a>        <span class="cf">if</span> stored_df_file <span class="kw">and</span> os.path.exists(stored_df_file):</span>
+<span id="cb1-233"><a href="#cb1-233"></a>            <span class="va">self</span>._df <span class="op">=</span> pd.read_json(stored_df_file).sort_index()</span>
+<span id="cb1-234"><a href="#cb1-234"></a>            <span class="va">self</span>._df_f <span class="op">=</span> pd.read_json(stored_df_file <span class="op">+</span> <span class="st">'.features'</span>).sort_index()</span>
+<span id="cb1-235"><a href="#cb1-235"></a>            <span class="va">self</span>._df_l <span class="op">=</span> pd.read_json(stored_df_file <span class="op">+</span> <span class="st">'.labels'</span>).sort_index()</span>
+<span id="cb1-236"><a href="#cb1-236"></a>            <span class="va">self</span>._is_processed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-237"><a href="#cb1-237"></a>            <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb1-238"><a href="#cb1-238"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb1-239"><a href="#cb1-239"></a>    </span>
+<span id="cb1-240"><a href="#cb1-240"></a>    <span class="kw">def</span> store(<span class="va">self</span>, stored_df_file):</span>
+<span id="cb1-241"><a href="#cb1-241"></a>        <span class="va">self</span>._df.to_json(stored_df_file)</span>
+<span id="cb1-242"><a href="#cb1-242"></a>        <span class="va">self</span>._df_f.to_json(stored_df_file <span class="op">+</span> <span class="st">'.features'</span>)</span>
+<span id="cb1-243"><a href="#cb1-243"></a>        <span class="va">self</span>._df_l.to_json(stored_df_file <span class="op">+</span> <span class="st">'.labels'</span>)</span>
+<span id="cb1-244"><a href="#cb1-244"></a></span>
+<span id="cb1-245"><a href="#cb1-245"></a>    <span class="kw">def</span> _filter_empty(<span class="va">self</span>, dfx):</span>
+<span id="cb1-246"><a href="#cb1-246"></a>        <span class="cf">return</span> dfx[</span>
+<span id="cb1-247"><a href="#cb1-247"></a>            (dfx[<span class="st">"uint32 PACKETS"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span></span>
+<span id="cb1-248"><a href="#cb1-248"></a>            (dfx[<span class="st">"uint32 PACKETS_REV"</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span></span>
+<span id="cb1-249"><a href="#cb1-249"></a>            (dfx[<span class="st">"uint16* PPI_PKT_LENGTHS"</span>].<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span></span>
+<span id="cb1-250"><a href="#cb1-250"></a>            (dfx[<span class="st">"uint16* PPI_PKT_LENGTHS_1"</span>].<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">&amp;</span></span>
+<span id="cb1-251"><a href="#cb1-251"></a>            (dfx[<span class="st">"uint16* PPI_PKT_LENGTHS_-1"</span>].<span class="bu">str</span>.<span class="bu">len</span>() <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb1-252"><a href="#cb1-252"></a>        ]</span>
+<span id="cb1-253"><a href="#cb1-253"></a></span>
+<span id="cb1-254"><a href="#cb1-254"></a>    <span class="kw">def</span> _norm(<span class="va">self</span>, dfx, fit_new_scaler<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb1-255"><a href="#cb1-255"></a>        <span class="cf">if</span> <span class="va">self</span>._do_norm:</span>
+<span id="cb1-256"><a href="#cb1-256"></a>            feature_fields_stats <span class="op">=</span> <span class="va">self</span>._feature_fields()</span>
+<span id="cb1-257"><a href="#cb1-257"></a></span>
+<span id="cb1-258"><a href="#cb1-258"></a>            <span class="cf">if</span> fit_new_scaler:</span>
+<span id="cb1-259"><a href="#cb1-259"></a>                scaler <span class="op">=</span> RobustScaler(</span>
+<span id="cb1-260"><a href="#cb1-260"></a>                    unit_variance<span class="op">=</span><span class="va">False</span></span>
+<span id="cb1-261"><a href="#cb1-261"></a>                ).fit(dfx[feature_fields_stats])</span>
+<span id="cb1-262"><a href="#cb1-262"></a>                <span class="va">self</span>._scaler <span class="op">=</span> scaler</span>
+<span id="cb1-263"><a href="#cb1-263"></a>            <span class="cf">else</span>:</span>
+<span id="cb1-264"><a href="#cb1-264"></a>                scaler <span class="op">=</span> <span class="va">self</span>._scaler</span>
+<span id="cb1-265"><a href="#cb1-265"></a>                <span class="cf">assert</span> <span class="va">self</span>._scaler <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span></span>
+<span id="cb1-266"><a href="#cb1-266"></a></span>
+<span id="cb1-267"><a href="#cb1-267"></a>            dfx[feature_fields_stats] <span class="op">=</span> scaler.transform(dfx[feature_fields_stats])</span>
+<span id="cb1-268"><a href="#cb1-268"></a>        <span class="cf">return</span> dfx</span>
+<span id="cb1-269"><a href="#cb1-269"></a></span>
+<span id="cb1-270"><a href="#cb1-270"></a>    <span class="kw">def</span> store_scaler(<span class="va">self</span>, stored_file):</span>
+<span id="cb1-271"><a href="#cb1-271"></a>        dump(<span class="va">self</span>._scaler, stored_file)</span>
+<span id="cb1-272"><a href="#cb1-272"></a></span>
+<span id="cb1-273"><a href="#cb1-273"></a>    <span class="kw">def</span> load_scaler(<span class="va">self</span>, stored_file):</span>
+<span id="cb1-274"><a href="#cb1-274"></a>        <span class="va">self</span>._scaler <span class="op">=</span> load(stored_file)</span>
+<span id="cb1-275"><a href="#cb1-275"></a></span>
+<span id="cb1-276"><a href="#cb1-276"></a>    <span class="kw">def</span> _split_features_label(<span class="va">self</span>, dfx):</span>
+<span id="cb1-277"><a href="#cb1-277"></a>        feature_fields_stats <span class="op">=</span> <span class="va">self</span>._feature_fields()</span>
+<span id="cb1-278"><a href="#cb1-278"></a></span>
+<span id="cb1-279"><a href="#cb1-279"></a>        dfx_features <span class="op">=</span> dfx[feature_fields_stats].copy()</span>
+<span id="cb1-280"><a href="#cb1-280"></a>        dfx_labels <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb1-281"><a href="#cb1-281"></a>        <span class="cf">if</span> <span class="st">'IsDoH'</span> <span class="kw">in</span> dfx.columns:</span>
+<span id="cb1-282"><a href="#cb1-282"></a>            dfx_labels <span class="op">=</span> dfx[[<span class="st">"IsDoH"</span>]].copy()</span>
+<span id="cb1-283"><a href="#cb1-283"></a>        <span class="cf">return</span> dfx, dfx_features, dfx_labels</span>
+<span id="cb1-284"><a href="#cb1-284"></a></span>
+<span id="cb1-285"><a href="#cb1-285"></a>    <span class="kw">def</span> process(<span class="va">self</span>, df, stored_df_file, fit_new_scaler<span class="op">=</span><span class="va">True</span>):</span>
+<span id="cb1-286"><a href="#cb1-286"></a>        <span class="cf">if</span> <span class="kw">not</span> <span class="va">self</span>.load(stored_df_file):</span>
+<span id="cb1-287"><a href="#cb1-287"></a>            dfx <span class="op">=</span> df.copy()</span>
+<span id="cb1-288"><a href="#cb1-288"></a></span>
+<span id="cb1-289"><a href="#cb1-289"></a>            dfx <span class="op">=</span> fields_stats(</span>
+<span id="cb1-290"><a href="#cb1-290"></a>                dfx, </span>
+<span id="cb1-291"><a href="#cb1-291"></a>                [<span class="st">"uint16* PPI_PKT_LENGTHS"</span>, <span class="st">"uint16* PPI_PKT_LENGTHS_1"</span>, <span class="st">"uint16* PPI_PKT_LENGTHS_-1"</span>],</span>
+<span id="cb1-292"><a href="#cb1-292"></a>                <span class="va">self</span>._l_skip,</span>
+<span id="cb1-293"><a href="#cb1-293"></a>                <span class="va">self</span>._l_weights,</span>
+<span id="cb1-294"><a href="#cb1-294"></a>            )</span>
+<span id="cb1-295"><a href="#cb1-295"></a></span>
+<span id="cb1-296"><a href="#cb1-296"></a>            dfx <span class="op">=</span> fields_stats(</span>
+<span id="cb1-297"><a href="#cb1-297"></a>                dfx, </span>
+<span id="cb1-298"><a href="#cb1-298"></a>                [<span class="st">"PPI_PKT_INTERVALS"</span>, <span class="st">"PPI_PKT_INTERVALS_1"</span>, <span class="st">"PPI_PKT_INTERVALS-1"</span>],</span>
+<span id="cb1-299"><a href="#cb1-299"></a>                <span class="va">self</span>._t_skip,</span>
+<span id="cb1-300"><a href="#cb1-300"></a>                <span class="va">self</span>._t_weights,</span>
+<span id="cb1-301"><a href="#cb1-301"></a>            )</span>
+<span id="cb1-302"><a href="#cb1-302"></a></span>
+<span id="cb1-303"><a href="#cb1-303"></a>            dfx <span class="op">=</span> <span class="va">self</span>._filter_empty(dfx)</span>
+<span id="cb1-304"><a href="#cb1-304"></a>            dfx <span class="op">=</span> <span class="va">self</span>._norm(dfx, fit_new_scaler)</span>
+<span id="cb1-305"><a href="#cb1-305"></a></span>
+<span id="cb1-306"><a href="#cb1-306"></a>            df, df_f, df_l <span class="op">=</span> <span class="va">self</span>._split_features_label(dfx)</span>
+<span id="cb1-307"><a href="#cb1-307"></a>            <span class="va">self</span>._df <span class="op">=</span> df</span>
+<span id="cb1-308"><a href="#cb1-308"></a>            <span class="va">self</span>._df_f <span class="op">=</span> df_f</span>
+<span id="cb1-309"><a href="#cb1-309"></a>            <span class="va">self</span>._df_l <span class="op">=</span> df_l</span>
+<span id="cb1-310"><a href="#cb1-310"></a>            <span class="va">self</span>._is_processed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb1-311"><a href="#cb1-311"></a>            <span class="va">self</span>.store(stored_df_file)</span>
+<span id="cb1-312"><a href="#cb1-312"></a>        <span class="cf">return</span> <span class="va">self</span>._df, <span class="va">self</span>._df_f, <span class="va">self</span>._df_l</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./references.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">References</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./appendices2.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Scripts</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

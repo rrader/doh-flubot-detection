@@ -1,0 +1,8 @@
+/.quarto/
+_public
+*_files
+*.saved
+*.labels
+*.features
+*.joblib
+*.pdf

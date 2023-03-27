@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.290">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2023-03-08-flubot-multiple-nodes - 14&nbsp; Detect malware (RF normed-2-4-2-4)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.html" rel="next">
+<link href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../flubot-detection.html">Experiment 1: Malware detection</a></li><li class="breadcrumb-item"><a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-2-4)</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">2023-03-08-flubot-multiple-nodes</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../collect-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: "Clean room" with multiple Androids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Design and log of experiment 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/analyze-collected-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analyze generated dataset</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../train-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train DoH detection models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../train-model-plan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Training models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/sample-Jerabek2022-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sample learning dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/cached-preprocessing-and-labeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Label learning dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/build-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Build models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/choose-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Choose model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/choose-threshold.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Selecting threshold</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../flubot-detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: Malware detection</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../flubot-detection-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Malware detection overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-0-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-0-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-2-4)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-1-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-2-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-4-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-2-4-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-1-4-1-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-1-4-1-4)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../flubot-detection-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 2: Real-world scenario</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../flubot-detection-2-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Design and log of experiment 2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/analyze-collected-dataset-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Analyze generated dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../notebooks/flubot-detection-second.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Detect malware</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Library</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Scripts</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#stage-i-model-tuning" id="toc-stage-i-model-tuning" class="nav-link active" data-scroll-target="#stage-i-model-tuning"><span class="header-section-number">14.0.1</span> Stage I: Model tuning</a></li>
+  <li><a href="#stage-ii-malware-detection" id="toc-stage-ii-malware-detection" class="nav-link" data-scroll-target="#stage-ii-malware-detection"><span class="header-section-number">14.0.2</span> Stage II: Malware detection</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-2-4)</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>The model deployment is done in two stages: I. tune the model, II. turn on the malware detection (on the data collected in B1 and B2 periods respectively, described in the timeline <a href="../../experiment.html#fig-timeline">Figure&nbsp;<span>3.1</span></a>)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../../imgs/timeline.png" class="quarto-discovered-preview-image img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Timeline</figcaption><p></p>
+</figure>
+</div>
+<section id="stage-i-model-tuning" class="level3" data-number="14.0.1">
+<h3 data-number="14.0.1" class="anchored" data-anchor-id="stage-i-model-tuning"><span class="header-section-number">14.0.1</span> Stage I: Model tuning</h3>
+<p>On this state we fit the scaler on the data collected in B1 period, to be used later on the second stage</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:16.095728Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:16.095465Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:16.406955Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:16.406251Z&quot;}" data-papermill="{&quot;duration&quot;:0.319735,&quot;end_time&quot;:&quot;2023-03-25T10:29:16.408659&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:16.088924&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> detect_common <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:16.420518Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:16.420230Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:16.423100Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:16.422629Z&quot;}" data-papermill="{&quot;duration&quot;:0.009466,&quot;end_time&quot;:&quot;2023-03-25T10:29:16.424320&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:16.414854&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p1version <span class="op">=</span> <span class="st">"v6"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>p2version <span class="op">=</span> <span class="st">"v7"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>p3version <span class="op">=</span> <span class="st">"v5"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:16.433112Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:16.432964Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:16.435945Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:16.435439Z&quot;}" data-papermill="{&quot;duration&quot;:0.00871,&quot;end_time&quot;:&quot;2023-03-25T10:29:16.437200&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:16.428490&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[&quot;parameters&quot;]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="st">'RF'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>normed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>skips_and_weights <span class="op">=</span> [<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:16.450482Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:16.450223Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:16.452781Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:16.452309Z&quot;}" data-papermill="{&quot;duration&quot;:0.01231,&quot;end_time&quot;:&quot;2023-03-25T10:29:16.453911&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:16.441601&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[&quot;injected-parameters&quot;]" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="st">"RF"</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>normed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>skips_and_weights <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:16.464787Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:16.464635Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:22.276264Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:22.275715Z&quot;}" data-papermill="{&quot;duration&quot;:5.820385,&quot;end_time&quot;:&quot;2023-03-25T10:29:22.279085&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:16.458700&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dateutil.parser</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df_b1 <span class="op">=</span> pd.read_feather(<span class="st">"cached/v5_1.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:22.295088Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:22.294818Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:27.345025Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:27.344033Z&quot;}" data-papermill="{&quot;duration&quot;:5.061786,&quot;end_time&quot;:&quot;2023-03-25T10:29:27.347292&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:22.285506&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>path_doh_ips_androids <span class="op">=</span> basepath <span class="op">+</span> <span class="st">"datasets/flubot20230323/data/v5_benign_doh_ips.csv"</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>path_doh_ips_general <span class="op">=</span> <span class="st">"doh_resolver_ip.csv"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>full_list <span class="op">=</span> get_doh_ips(path_doh_ips_androids) <span class="op">+</span> get_doh_ips(path_doh_ips_general)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>cp <span class="op">=</span> CacheableProcessing(<span class="dv">100</span>, <span class="dv">100</span>, full_list)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>df_b1_p <span class="op">=</span> cp.process(df_b1, <span class="ss">f"cached/v5_1.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.cp.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:27.365400Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:27.364932Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:27.682894Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:27.681913Z&quot;}" data-papermill="{&quot;duration&quot;:0.329768,&quot;end_time&quot;:&quot;2023-03-25T10:29:27.685084&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:27.355316&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> joblib <span class="im">import</span> dump, load</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> (</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'normed-'</span> <span class="cf">if</span> normed <span class="cf">else</span> <span class="st">'unnormed-'</span>) <span class="op">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">'-'</span>.join(<span class="bu">str</span>(p) <span class="cf">for</span> p <span class="kw">in</span> skips_and_weights)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> load(<span class="ss">f'models/</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-mix-1-p-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.p1.</span><span class="sc">{</span>p1version<span class="sc">}</span><span class="ss">.p2.</span><span class="sc">{</span>p2version<span class="sc">}</span><span class="ss">.joblib'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:27.698845Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:27.698537Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:34.857203Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:34.856568Z&quot;}" data-papermill="{&quot;duration&quot;:7.167167,&quot;end_time&quot;:&quot;2023-03-25T10:29:34.859316&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:27.692149&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pp_b1 <span class="op">=</span> PreProcessing(normed, <span class="op">*</span>skips_and_weights)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df_b1_pp <span class="op">=</span> pp_b1.process(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    df_b1_p,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.saved"</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    fit_new_scaler<span class="op">=</span><span class="va">True</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:34.877743Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:34.877506Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:34.881115Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:34.880475Z&quot;}" data-papermill="{&quot;duration&quot;:0.014606,&quot;end_time&quot;:&quot;2023-03-25T10:29:34.882373&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:34.867767&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pp_b1.store_scaler(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.scaler"</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="stage-ii-malware-detection" class="level3" data-number="14.0.2">
+<h3 data-number="14.0.2" class="anchored" data-anchor-id="stage-ii-malware-detection"><span class="header-section-number">14.0.2</span> Stage II: Malware detection</h3>
+<p>On this state we turn on the malware detection, provisioning the model with the scaler trained before. For malware detection we use the data trained in B2 period.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:34.916664Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:34.916384Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:37.919664Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:37.918570Z&quot;}" data-papermill="{&quot;duration&quot;:3.024498,&quot;end_time&quot;:&quot;2023-03-25T10:29:37.922303&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:34.897805&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_b2 <span class="op">=</span> pd.read_feather(<span class="st">"cached/v5_2.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:37.939240Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:37.938879Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:29:53.081483Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:29:53.080702Z&quot;}" data-papermill="{&quot;duration&quot;:15.155735,&quot;end_time&quot;:&quot;2023-03-25T10:29:53.084686&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:37.928951&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cp <span class="op">=</span> CacheableProcessing(<span class="dv">100</span>, <span class="dv">100</span>, full_list)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_b2_p <span class="op">=</span> cp.process(df_b2, <span class="ss">f"cached/v5_2.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.cp.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:29:53.107503Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:29:53.107094Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:30:16.937027Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:30:16.936036Z&quot;}" data-papermill="{&quot;duration&quot;:23.844212,&quot;end_time&quot;:&quot;2023-03-25T10:30:16.939815&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:29:53.095603&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pp_b2 <span class="op">=</span> PreProcessing(normed, <span class="op">*</span>skips_and_weights)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>pp_b2.load_scaler(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.scaler"</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>df_b2_pp, df_b2_pp_features, df_b2_pp_labels <span class="op">=</span> pp_b2.process(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    df_b2_p,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"cached/b2.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.saved"</span>, </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    fit_new_scaler<span class="op">=</span><span class="va">False</span>  <span class="co"># use scaler trained in B1</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:30:16.958565Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:30:16.957759Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:30:16.963336Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:30:16.962718Z&quot;}" data-papermill="{&quot;duration&quot;:0.017284,&quot;end_time&quot;:&quot;2023-03-25T10:30:16.964580&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:30:16.947296&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(pp, clf, threshold, df_pp, df_orig):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">    pp: PreProcessing object</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">    clf: classifier</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">    threshold: &gt;=threshold for positive (DoH) class</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">    df_pp: preprocessed dataframe</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">    df_orig: unprocessed dataframe</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    df_pp2 <span class="op">=</span> df_pp.copy()</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    df_pp2[<span class="st">"IsDoHPredicted"</span>] <span class="op">=</span> (clf.predict_proba(df_pp2[pp.feature_fields])[:,<span class="dv">1</span>] <span class="op">&gt;=</span> threshold).astype(<span class="bu">bool</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    df_orig2 <span class="op">=</span> df_orig.copy()</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fill predicted to the original dataframe</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    df_orig2[<span class="st">"IsDoHPredicted"</span>] <span class="op">=</span> df_pp2[<span class="st">"IsDoHPredicted"</span>]</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># non-443 rows will be NaN, replace with False</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    df_orig2[<span class="st">"IsDoHPredicted"</span>] <span class="op">=</span> df_orig2[<span class="st">"IsDoHPredicted"</span>].fillna(<span class="va">False</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_orig2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:30:16.979738Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:30:16.979336Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:30:19.229956Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:30:19.228908Z&quot;}" data-papermill="{&quot;duration&quot;:2.261682,&quot;end_time&quot;:&quot;2023-03-25T10:30:19.231825&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:30:16.970143&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.read_feather(<span class="ss">f"cached/robustness.balanced_mix-results.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.ft"</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>results_df[<span class="st">"skips_and_weights"</span>] <span class="op">=</span> results_df[<span class="st">"skips_and_weights"</span>].<span class="bu">apply</span>(<span class="bu">str</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>model, normed, skips_and_weights_str, auc, fprs, tprs, thresholds <span class="op">=</span> results_df[</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    (results_df[<span class="st">"model"</span>] <span class="op">==</span> model) <span class="op">&amp;</span> (results_df[<span class="st">"normed"</span>] <span class="op">==</span> normed) <span class="op">&amp;</span> (results_df[<span class="st">"skips_and_weights"</span>] <span class="op">==</span> <span class="bu">str</span>(np.array(skips_and_weights)))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>].iloc[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:30:19.247669Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:30:19.247368Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:30:34.616521Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:30:34.615319Z&quot;}" data-papermill="{&quot;duration&quot;:15.38155,&quot;end_time&quot;:&quot;2023-03-25T10:30:34.619451&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:30:19.237901&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity <span class="kw">in</span> [<span class="fl">0.8</span>, <span class="fl">0.9</span>]:</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    threshold <span class="op">=</span> [threshold <span class="cf">for</span> tpr, threshold <span class="kw">in</span> <span class="bu">zip</span>(tprs, thresholds) <span class="cf">if</span> tpr <span class="op">&gt;=</span> sensitivity][<span class="dv">0</span>]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> predict(pp_b2, clf, threshold, df_b2_pp, df_b2)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    data[sensitivity] <span class="op">=</span> {</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">'df'</span>: df_pred,  <span class="co"># dataframe with predicted values,</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">'threshold'</span>: threshold,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    }</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:30:34.644405Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:30:34.642956Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:30:34.653224Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:30:34.652477Z&quot;}" data-papermill="{&quot;duration&quot;:0.027152,&quot;end_time&quot;:&quot;2023-03-25T10:30:34.654351&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:30:34.627199&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc(df_n):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rate(df_h):</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        dns_packets <span class="op">=</span> df_h[df_h[<span class="st">"IsDoHPredicted"</span>] <span class="op">==</span> <span class="va">True</span>][<span class="st">"uint32 PACKETS"</span>].<span class="bu">sum</span>()  <span class="co"># outgoing packets</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        non_dns_ips <span class="op">=</span> <span class="bu">set</span>(df_h[df_h[<span class="st">"IsDoHPredicted"</span>] <span class="op">==</span> <span class="va">False</span>][<span class="st">"ipaddr SRC_IP"</span>].unique()).union(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="bu">set</span>(df_h[df_h[<span class="st">"IsDoHPredicted"</span>] <span class="op">==</span> <span class="va">False</span>][<span class="st">"ipaddr DST_IP"</span>].unique()))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        rate <span class="op">=</span> <span class="bu">float</span>(dns_packets) <span class="op">/</span> (<span class="fl">1.0</span> <span class="op">+</span> <span class="bu">len</span>(non_dns_ips))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">"dns_packets"</span>: dns_packets, <span class="st">"non_dns"</span>: <span class="bu">len</span>(non_dns_ips), <span class="st">"rate"</span>: rate, <span class="st">"rate_log"</span>: np.log(rate)}</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame({ ip: rate(grp) <span class="cf">for</span> ip, grp <span class="kw">in</span> df_n.groupby([<span class="st">"ipaddr SRC_IP"</span>]) }).T.reset_index()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="calculate-ratio-on-the-whole-dataset" class="level4" data-number="14.0.2.1">
+<h4 data-number="14.0.2.1" class="anchored" data-anchor-id="calculate-ratio-on-the-whole-dataset"><span class="header-section-number">14.0.2.1</span> Calculate ratio on the whole dataset</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:30:34.677392Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:30:34.676736Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:34:38.349836Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:34:38.349013Z&quot;}" data-papermill="{&quot;duration&quot;:243.680955,&quot;end_time&quot;:&quot;2023-03-25T10:34:38.351806&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:30:34.670851&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> value[<span class="st">"df"</span>]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    local_df <span class="op">=</span> df_pred[df_pred[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    display(calc(local_df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.8</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">dns_packets</th>
+<th data-quarto-table-cell-role="th">non_dns</th>
+<th data-quarto-table-cell-role="th">rate</th>
+<th data-quarto-table-cell-role="th">rate_log</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>192.168.1.1</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>192.168.2.149</td>
+<td>220785.0</td>
+<td>4543.0</td>
+<td>48.588248</td>
+<td>3.883382</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>192.168.2.217</td>
+<td>330986.0</td>
+<td>21.0</td>
+<td>15044.818182</td>
+<td>9.618789</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>192.168.2.249</td>
+<td>136625.0</td>
+<td>3607.0</td>
+<td>37.867239</td>
+<td>3.634086</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>192.168.2.42</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.9</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">dns_packets</th>
+<th data-quarto-table-cell-role="th">non_dns</th>
+<th data-quarto-table-cell-role="th">rate</th>
+<th data-quarto-table-cell-role="th">rate_log</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>192.168.1.1</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>192.168.2.149</td>
+<td>263891.0</td>
+<td>4339.0</td>
+<td>60.804378</td>
+<td>4.107662</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>192.168.2.217</td>
+<td>541214.0</td>
+<td>15.0</td>
+<td>33825.875000</td>
+<td>10.428981</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>192.168.2.249</td>
+<td>177432.0</td>
+<td>3445.0</td>
+<td>51.489263</td>
+<td>3.941373</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>192.168.2.42</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="split-into-time-windows" class="level4" data-number="14.0.2.2">
+<h4 data-number="14.0.2.2" class="anchored" data-anchor-id="split-into-time-windows"><span class="header-section-number">14.0.2.2</span> Split into time windows</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:34:38.383782Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:34:38.382789Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:34:40.477203Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:34:40.476316Z&quot;}" data-papermill="{&quot;duration&quot;:2.103186,&quot;end_time&quot;:&quot;2023-03-25T10:34:40.478601&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:34:38.375415&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>min_ts <span class="op">=</span> df_b2[<span class="st">"time TIME_FIRST"</span>].<span class="bu">apply</span>(dateutil.parser.parse).<span class="bu">min</span>()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>min_ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>Timestamp('2023-03-23 14:50:04.316951')</code></pre>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:34:40.501907Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:34:40.501375Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:34:51.640255Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:34:51.639459Z&quot;}" data-papermill="{&quot;duration&quot;:11.153638,&quot;end_time&quot;:&quot;2023-03-25T10:34:51.641847&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:34:40.488209&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>local_ips <span class="op">=</span> df_b2[df_b2[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)][<span class="st">"ipaddr SRC_IP"</span>].unique().tolist()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>local_ips</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>['192.168.2.249',
+ '192.168.2.149',
+ '192.168.2.42',
+ '192.168.2.217',
+ '192.168.1.1']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:34:51.672802Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:34:51.671900Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:48:05.281244Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:48:05.280603Z&quot;}" data-papermill="{&quot;duration&quot;:793.632534,&quot;end_time&quot;:&quot;2023-03-25T10:48:05.283492&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:34:51.650958&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="st">'3min'</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> value[<span class="st">"df"</span>]</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    local_df <span class="op">=</span> df_pred[df_pred[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)].copy()</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    local_df[<span class="st">"time TIME_FIRST"</span>] <span class="op">=</span> local_df[<span class="st">"time TIME_FIRST"</span>].<span class="bu">apply</span>(dateutil.parser.parse)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    calc_ips <span class="op">=</span> {}</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    a1_t <span class="op">=</span> local_df.set_index([<span class="st">"time TIME_FIRST"</span>])</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    df_resample <span class="op">=</span> a1_t.groupby(pd.Grouper(freq<span class="op">=</span>f, origin<span class="op">=</span>min_ts)).first()</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    times <span class="op">=</span> df_resample.index.tolist()</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    ranges <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(times, times[<span class="dv">1</span>:]))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> []</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ran <span class="kw">in</span> ranges:</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        df_ran <span class="op">=</span> a1_t[(a1_t.index <span class="op">&gt;</span> ran[<span class="dv">0</span>]) <span class="op">&amp;</span> (a1_t.index <span class="op">&lt;</span> ran[<span class="dv">1</span>])]</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        df_calc <span class="op">=</span> calc(df_ran)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        df_calc[<span class="st">"ts"</span>] <span class="op">=</span> ran[<span class="dv">0</span>]</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        df_calcs.append(df_calc)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    value[<span class="st">"df_calc"</span>] <span class="op">=</span> pd.concat(df_calcs).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.8</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.9</code></pre>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:48:05.337242Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:48:05.336784Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:48:26.492118Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:48:26.491471Z&quot;}" data-papermill="{&quot;duration&quot;:21.184997,&quot;end_time&quot;:&quot;2023-03-25T10:48:26.493511&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:48:05.308514&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    fig, axs <span class="op">=</span> plt.subplots(ncols<span class="op">=</span><span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> value[<span class="st">"df_calc"</span>]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> host <span class="kw">in</span> local_ips:</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        df_calc_host <span class="op">=</span> df_calcs[df_calcs[<span class="st">"index"</span>] <span class="op">==</span> host].set_index(<span class="st">"ts"</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        df_calc_host[<span class="st">"rate_log"</span>].plot(label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>host<span class="sc">}</span><span class="ss">'</span>, ax<span class="op">=</span>axs)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    plt.ylim(ymin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Sensitivity: </span><span class="sc">{</span>sensitivity<span class="sc">}</span><span class="ss">, threshold: </span><span class="sc">{</span>value[<span class="st">'threshold'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.8</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="gen-flubot-detection-RF-normed-2-4-2-4_files/figure-html/cell-24-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.9</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="gen-flubot-detection-RF-normed-2-4-2-4_files/figure-html/cell-24-output-4.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-0-0)</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-1-0-0-0)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

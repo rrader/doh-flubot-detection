@@ -1,0 +1,9 @@
+---
+title: "Library"
+---
+
+`notebooks/detect_common.py`:
+
+```{.python include="notebooks/detect_common.py" code-line-numbers="true"}
+common library source code
+```

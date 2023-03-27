@@ -1,0 +1,51 @@
+# Overview
+
+In this experiment we are analyzing the proposed method of detection DNS-over-HTTPS Exfiltration traffic.
+
+## FluBot malware
+
+We are using the sample of FluBot malware - Android malware which performs exfiltration of data using DoH, (@fig-flubot). It was active during 2021 and 2022, in the 
+
+Sample of FluBot 5.2 was downloaded from the [vx-underground](https://samples.vx-underground.org/samples/Families/Android.FluBot/Samples/5.2/4859ab9cd5efbe0d4f63799126110d744a42eff057fa22ff1bd11cb59b49608c.7z). In the version 5.0 DoH tunneling feature was integrated to the FluBot.
+
+In the May 2022 the FluBot infrastracture was taken down by then [EuroPol](https://www.europol.europa.eu/media-press/newsroom/news/takedown-of-sms-based-flubot-spyware-infecting-android-phones). However, we use it as a real-world malware sample to validate the DoH tunneling/exfiltration detection algorithm.
+
+Report of F5.com on the FluBot malware can be found [here](./F5-FluBot.pdf).
+
+![Flubot masks as a flash player](imgs/flubot-masks-as-flash-player.png){#fig-flubot}
+
+
+## Proposed method
+
+The proposed method is based on the two steps:
+
+  - Classify network flows as a DoH or non-DoH, with a classifier built on the @Jerabek2022Collection dataset ([https://zenodo.org/record/6024914#.ZAcru-xBzaV](https://zenodo.org/record/6024914#.ZAcru-xBzaV))
+  - Apply the Netflow-based DGA detection algorithm @Grill2015 to detect infected machines
+
+Machine-learning classification of DoH traffic allows us to apply the algorithm to DoH traffic, originally designed for the plaintext DNS.
+
+## DoH traffic classification
+
+DoH traffic uses using standard HTTPS 443 port, which blends DNS packets within the generic HTTPS traffic. Netflow/IPFIX data of the DoH traffic does not contain direct features which could help to distinguish DNS traffic from other HTTPS communications. In this experiment we build a classifier on the @Jerabek2022Collection dataset using Logistic Regression, Random Forest and the Histogram-based Gradient Boosting (@sec-build-models), and selecting the models which are the most robust to the different network environment (@sec-robustness).
+
+## Infected network traffic recording
+
+For the experiment, we modelled the malware detection algorithm deployment into the production network. For that we deployed the sandbox network environment into the Proxmox server with 4 machines: 3 Android x86 emulators and 1 Kali Linux instance (see @sec-experiment-design), behind the OpenWRT router provisioned with the `IPFIXprobe` tool for recording traffic on the network border.
+
+One of the Android machines was infected by the FluBot malware during the experiment, the traffic was collected and saved to the CSV files (see @sec-experiment-log) @fig-capture-screenshot .
+
+![Screenshot](imgs/exp1-screen2.png){#fig-capture-screenshot}
+
+
+## Model training
+
+Model training includes data preparation in two steps (cached processing and preprocessing with hyperparameters) (see @sec-training).
+
+![Model training overview](imgs/overview.png){#fig-training-overview}
+
+
+## Malware detection
+
+To detect the malicious behavior of the machine, we propose to use the ratio of DNS requests and contacted IP addresses for every host in the local network described in the @Grill2015. The paper was focused on DGA-based malware detection. However, the approach should be used to detect DNS data exfiltration, too, since the behavior pattern is similar (see @sec-detection-overview).
+
+![Malware detection overview](imgs/detection.png){#fig-detection-overview}

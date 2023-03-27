@@ -1,0 +1,27 @@
+# Malware detection overview {#sec-detection-overview}
+
+## Concept drift: Train the scaler on production data {#sec-scaler}
+
+The network environment used to collect the training dataset and the one in which model will run in production will most likely be different: collection of a large labeled dataset require special configuration and usually done in a sandbox network separate from the real world traffic. This difference includes interferes with inter-packet duration measurements, packet routes and other features that we call generally "concept drift".
+
+In this experiment we train (fit) the scaler on the training data and on test data separately, it means that the  scaling ranges and percentiles used to scale the production data are differ from the ones used in the training dataset. The hypothesis is that separate scaling training may help to reduce the concept drift introduced by a different network.
+
+## Model deployment
+
+On this stage we already have the model, or rather a group of models (3 unnormed and 3 normed) which perform the best on the test data. Before we can deploy the model to the production to perform DoH detection, we should train the scaler on the new network. For that, we collect the traffic for the period of time (B1) on the timeline, without doing any inference @fig-timeline, and train the scaler on this data. In the second period (B2) we can start the malware detection module with model and the trained scaler (see @fig-model-deployment).
+
+![Model deployment](imgs/model-deployment.png){#fig-model-deployment}
+
+## DoH exfiltration detection algorithm
+
+To detect the malicious behavior of the machine, we propose to use the ratio of DNS requests and contacted IP addresses for every host in the local network described in the @Grill2015:
+
+$$\rho(a)={\delta(a) \over \pi(a) + 1}$$
+
+ - $a$ is the host in the network
+ - $\delta(a)$ values - number of DNS requests created by the host `a`
+ - $\pi(a)$ values - the number of unique IP addresses contacted by the `a`
+
+The value of the ratio $\rho(a)$ represents the "specific gravity" of contacted IP addresses per DNS request and can be used to detect DGA-, fast-fluxing-based malware, DNS Tunneling, and exfiltration attacks.
+
+The overall number of DNS requests $\delta(a)$ is linearly dependent on the observed duration, while the rate of increase of the count of new IPs in the time window is logarithmically decreases over time. To make the detection algorithm more robust to the change of the observed time window, we use $log(\rho)$ in our experiments.

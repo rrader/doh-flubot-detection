@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  lang="en"
+  xml:lang="en"
+  >
+  <head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="quarto-1.3.290" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+
+
+    <title>2023-03-08-flubot-multiple-nodes – Detect malware (RF normed-2-4-0-0)</title>    <style>
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      div.columns{display: flex; gap: min(4vw, 1.5em);}
+      div.column{flex: auto; overflow-x: auto;}
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+        vertical-align: middle;
+      }
+      /* CSS for syntax highlighting */
+      pre > code.sourceCode { white-space: pre; position: relative; }
+      pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+      pre > code.sourceCode > span:empty { height: 1.2em; }
+      .sourceCode { overflow: visible; }
+      code.sourceCode > span { color: inherit; text-decoration: inherit; }
+      div.sourceCode { margin: 1em 0; }
+      pre.sourceCode { margin: 0; }
+      @media screen {
+      div.sourceCode { overflow: auto; }
+      }
+      @media print {
+      pre > code.sourceCode { white-space: pre-wrap; }
+      pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+      }
+      pre.numberSource code
+        { counter-reset: source-line 0; }
+      pre.numberSource code > span
+        { position: relative; left: -4em; counter-increment: source-line; }
+      pre.numberSource code > span > a:first-child::before
+        { content: counter(source-line);
+          position: relative; left: -1em; text-align: right; vertical-align: baseline;
+          border: none; display: inline-block;
+          -webkit-touch-callout: none; -webkit-user-select: none;
+          -khtml-user-select: none; -moz-user-select: none;
+          -ms-user-select: none; user-select: none;
+          padding: 0 4px; width: 4em;
+        }
+      pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+      div.sourceCode
+        {   }
+      @media screen {
+      pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+      }
+    </style>
+    <style>
+      .quarto-embed-header {
+        height: 3em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px;
+      }
+      .quarto-embed-header h6 {
+        font-size: 1em;
+        padding-top: 0.6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-weight: 300;
+      }
+      .quarto-embed-header a.quarto-download-embed {
+        font-size: 0.7em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+    </style>
+    <!-- htmldependencies:E3FAD763 -->
+     <script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script> 
+      </head>
+  <body>
+    <div class="quarto-embed-header">
+      <h6><i class="bi bi-journal-code"></i> gen-flubot-detection-RF-normed-2-4-0-0.ipynb</h6>
+      <a
+        href="notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.ipynb"
+        class="btn btn-primary quarto-download-embed"
+        data-noresolveinput="true"
+        download="gen-flubot-detection-RF-normed-2-4-0-0.ipynb"
+        >Download Notebook</a
+      >
+    </div>
+     <div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn"
+      data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <h1 class="quarto-secondary-nav-title"></h1>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" 
+      aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation"
+      onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="/">
+      2023-03-08-flubot-multiple-nodes
+      </a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;1&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Overview&lt;/span&gt;</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/collect-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: &quot;Clean room&quot; with multiple Androids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;2&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Design and log of experiment 1&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/analyze-collected-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;3&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Analyze generated dataset&lt;/span&gt;</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/train-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train DoH detection models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/train-model-plan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;4&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Training models&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/sample-Jerabek2022-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;5&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Sample learning dataset&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/cached-preprocessing-and-labeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;6&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Label learning dataset&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/build-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;7&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Build models&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/choose-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;8&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Choose model&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/choose-threshold.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;9&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Selecting threshold&lt;/span&gt;</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/flubot-detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: Malware detection</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/flubot-detection-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;10&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Malware detection overview&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;11&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF normed-0-0-0-0)&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;12&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF unnormed-0-0-0-0)&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;13&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF normed-2-4-0-0)&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;14&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF normed-2-4-2-4)&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;15&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF normed-1-0-0-0)&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;16&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF unnormed-2-0-0-0)&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-4-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;17&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF unnormed-2-4-0-0)&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-1-4-1-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;18&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware (RF unnormed-1-4-1-4)&lt;/span&gt;</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="/flubot-detection-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 2: Real-world scenario</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/flubot-detection-2-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;19&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Design and log of experiment 2&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/analyze-collected-dataset-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;20&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Analyze generated dataset&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/notebooks/flubot-detection-second.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;21&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Detect malware&lt;/span&gt;</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;22&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Results&lt;/span&gt;</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/appendices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;A&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Library&lt;/span&gt;</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="/appendices2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">&lt;span class=&#39;chapter-number&#39;&gt;B&lt;/span&gt;  &lt;span class=&#39;chapter-title&#39;&gt;Scripts&lt;/span&gt;</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" ></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <div id="quarto-toc-target"></div>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">      <header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Detect malware (RF normed-2-4-0-0)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>   <nav id="TOC" role="doc-toc">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#detect-malware-rf-normed-2-4-0-0" id="toc-detect-malware-rf-normed-2-4-0-0"><span class="header-section-number">1</span> Detect malware (RF normed-2-4-0-0)</a>
+  <ul>
+  <li><a href="#stage-i-model-tuning" id="toc-stage-i-model-tuning"><span class="header-section-number">1.0.1</span> Stage I: Model tuning</a></li>
+  <li><a href="#stage-ii-malware-detection" id="toc-stage-ii-malware-detection"><span class="header-section-number">1.0.2</span> Stage II: Malware detection</a></li>
+  </ul></li>
+  </ul>
+</nav>  <section id="detect-malware-rf-normed-2-4-0-0" class="level1" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> Detect malware (RF normed-2-4-0-0)</h1>
+<p>The model deployment is done in two stages: I. tune the model, II. turn on the malware detection (on the data collected in B1 and B2 periods respectively, described in the timeline <a href="#fig-timeline">Figure <span class="quarto-unresolved-ref">fig-timeline</span></a>)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="../../imgs/timeline.png" class="quarto-discovered-preview-image img-fluid" /></p>
+<p><figcaption>Timeline</figcaption></p>
+</figure>
+</div>
+<section id="stage-i-model-tuning" class="level3" data-number="1.0.1">
+<h3 data-number="1.0.1"><span class="header-section-number">1.0.1</span> Stage I: Model tuning</h3>
+<p>On this state we fit the scaler on the data collected in B1 period, to be used later on the second stage</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:20.079780Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:20.079323Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:20.413804Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:20.412845Z&quot;}" data-papermill="{&quot;duration&quot;:0.342122,&quot;end_time&quot;:&quot;2023-03-25T10:10:20.415844&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:20.073722&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="3">
+<div class="sourceCode" id="cb1"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> detect_common <span class="im">import</span> <span class="op">*</span></span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:20.429679Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:20.429422Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:20.432705Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:20.432236Z&quot;}" data-papermill="{&quot;duration&quot;:0.013171,&quot;end_time&quot;:&quot;2023-03-25T10:10:20.435495&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:20.422324&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="4">
+<div class="sourceCode" id="cb2"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p1version <span class="op">=</span> <span class="st">&quot;v6&quot;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>p2version <span class="op">=</span> <span class="st">&quot;v7&quot;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>p3version <span class="op">=</span> <span class="st">&quot;v5&quot;</span></span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:20.449269Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:20.449022Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:20.451591Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:20.451158Z&quot;}" data-papermill="{&quot;duration&quot;:0.012137,&quot;end_time&quot;:&quot;2023-03-25T10:10:20.452983&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:20.440846&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[&quot;parameters&quot;]" data-execution_count="5">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="st">&#39;RF&#39;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>normed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>skips_and_weights <span class="op">=</span> [<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:20.463132Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:20.462948Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:20.465497Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:20.465065Z&quot;}" data-papermill="{&quot;duration&quot;:0.008287,&quot;end_time&quot;:&quot;2023-03-25T10:10:20.466594&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:20.458307&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[&quot;injected-parameters&quot;]" data-execution_count="6">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="st">&quot;RF&quot;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>normed <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>skips_and_weights <span class="op">=</span> [<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">0</span>]</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:20.475954Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:20.475805Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:25.982029Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:25.980484Z&quot;}" data-papermill="{&quot;duration&quot;:5.514052,&quot;end_time&quot;:&quot;2023-03-25T10:10:25.984989&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:20.470937&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="7">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dateutil.parser</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df_b1 <span class="op">=</span> pd.read_feather(<span class="st">&quot;cached/v5_1.ft&quot;</span>)</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:26.003639Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:26.003160Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:31.220380Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:31.219350Z&quot;}" data-papermill="{&quot;duration&quot;:5.228664,&quot;end_time&quot;:&quot;2023-03-25T10:10:31.222514&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:25.993850&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="8">
+<div class="sourceCode" id="cb6"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>path_doh_ips_androids <span class="op">=</span> basepath <span class="op">+</span> <span class="st">&quot;datasets/flubot20230323/data/v5_benign_doh_ips.csv&quot;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>path_doh_ips_general <span class="op">=</span> <span class="st">&quot;doh_resolver_ip.csv&quot;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>full_list <span class="op">=</span> get_doh_ips(path_doh_ips_androids) <span class="op">+</span> get_doh_ips(path_doh_ips_general)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>cp <span class="op">=</span> CacheableProcessing(<span class="dv">100</span>, <span class="dv">100</span>, full_list)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>df_b1_p <span class="op">=</span> cp.process(df_b1, <span class="ss">f&quot;cached/v5_1.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.cp.ft&quot;</span>)</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:31.239495Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:31.238637Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:31.560503Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:31.559403Z&quot;}" data-papermill="{&quot;duration&quot;:0.332383,&quot;end_time&quot;:&quot;2023-03-25T10:10:31.562506&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:31.230123&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="9">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> joblib <span class="im">import</span> dump, load</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> (</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    (<span class="st">&#39;normed-&#39;</span> <span class="cf">if</span> normed <span class="cf">else</span> <span class="st">&#39;unnormed-&#39;</span>) <span class="op">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;-&#39;</span>.join(<span class="bu">str</span>(p) <span class="cf">for</span> p <span class="kw">in</span> skips_and_weights)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>clf <span class="op">=</span> load(<span class="ss">f&#39;models/</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-mix-1-p-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.p1.</span><span class="sc">{</span>p1version<span class="sc">}</span><span class="ss">.p2.</span><span class="sc">{</span>p2version<span class="sc">}</span><span class="ss">.joblib&#39;</span>)</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:31.580815Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:31.580572Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:38.411727Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:38.410768Z&quot;}" data-papermill="{&quot;duration&quot;:6.841533,&quot;end_time&quot;:&quot;2023-03-25T10:10:38.414065&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:31.572532&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="10">
+<div class="sourceCode" id="cb8"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>pp_b1 <span class="op">=</span> PreProcessing(normed, <span class="op">*</span>skips_and_weights)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>df_b1_pp <span class="op">=</span> pp_b1.process(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    df_b1_p,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f&quot;cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.saved&quot;</span>, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    fit_new_scaler<span class="op">=</span><span class="va">True</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:38.427404Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:38.427144Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:38.431322Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:38.430705Z&quot;}" data-papermill="{&quot;duration&quot;:0.011771,&quot;end_time&quot;:&quot;2023-03-25T10:10:38.432656&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:38.420885&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="11">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pp_b1.store_scaler(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f&quot;cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.scaler&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+</section>
+<section id="stage-ii-malware-detection" class="level3" data-number="1.0.2">
+<h3 data-number="1.0.2"><span class="header-section-number">1.0.2</span> Stage II: Malware detection</h3>
+<p>On this state we turn on the malware detection, provisioning the model with the scaler trained before. For malware detection we use the data trained in B2 period.</p>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:38.476557Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:38.474462Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:41.313172Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:41.312532Z&quot;}" data-papermill="{&quot;duration&quot;:2.86276,&quot;end_time&quot;:&quot;2023-03-25T10:10:41.314909&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:38.452149&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="12">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_b2 <span class="op">=</span> pd.read_feather(<span class="st">&quot;cached/v5_2.ft&quot;</span>)</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:41.329383Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:41.329170Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:10:55.735853Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:10:55.735009Z&quot;}" data-papermill="{&quot;duration&quot;:14.417295,&quot;end_time&quot;:&quot;2023-03-25T10:10:55.738820&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:41.321525&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="13">
+<div class="sourceCode" id="cb11"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>cp <span class="op">=</span> CacheableProcessing(<span class="dv">100</span>, <span class="dv">100</span>, full_list)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_b2_p <span class="op">=</span> cp.process(df_b2, <span class="ss">f&quot;cached/v5_2.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.cp.ft&quot;</span>)</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:10:55.759756Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:10:55.755861Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:11:13.018414Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:11:13.017573Z&quot;}" data-papermill="{&quot;duration&quot;:17.274241,&quot;end_time&quot;:&quot;2023-03-25T10:11:13.020462&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:10:55.746221&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="14">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>pp_b2 <span class="op">=</span> PreProcessing(normed, <span class="op">*</span>skips_and_weights)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>pp_b2.load_scaler(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f&quot;cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.scaler&quot;</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>df_b2_pp, df_b2_pp_features, df_b2_pp_labels <span class="op">=</span> pp_b2.process(</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    df_b2_p,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f&quot;cached/b2.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.saved&quot;</span>, </span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    fit_new_scaler<span class="op">=</span><span class="va">False</span>  <span class="co"># use scaler trained in B1</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:11:13.037119Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:11:13.036918Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:11:13.041216Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:11:13.040675Z&quot;}" data-papermill="{&quot;duration&quot;:0.015852,&quot;end_time&quot;:&quot;2023-03-25T10:11:13.043559&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:11:13.027707&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="15">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(pp, clf, threshold, df_pp, df_orig):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">&quot;&quot;&quot;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">    pp: PreProcessing object</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">    clf: classifier</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">    threshold: &gt;=threshold for positive (DoH) class</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co">    df_pp: preprocessed dataframe</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">    df_orig: unprocessed dataframe</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">    &quot;&quot;&quot;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>    df_pp2 <span class="op">=</span> df_pp.copy()</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    df_pp2[<span class="st">&quot;IsDoHPredicted&quot;</span>] <span class="op">=</span> (clf.predict_proba(df_pp2[pp.feature_fields])[:,<span class="dv">1</span>] <span class="op">&gt;=</span> threshold).astype(<span class="bu">bool</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>    df_orig2 <span class="op">=</span> df_orig.copy()</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># fill predicted to the original dataframe</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    df_orig2[<span class="st">&quot;IsDoHPredicted&quot;</span>] <span class="op">=</span> df_pp2[<span class="st">&quot;IsDoHPredicted&quot;</span>]</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># non-443 rows will be NaN, replace with False</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>    df_orig2[<span class="st">&quot;IsDoHPredicted&quot;</span>] <span class="op">=</span> df_orig2[<span class="st">&quot;IsDoHPredicted&quot;</span>].fillna(<span class="va">False</span>)</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_orig2</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:11:13.058536Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:11:13.058277Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:11:14.884253Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:11:14.883507Z&quot;}" data-papermill="{&quot;duration&quot;:1.8363,&quot;end_time&quot;:&quot;2023-03-25T10:11:14.886699&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:11:13.050399&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="16">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.read_feather(<span class="ss">f&quot;cached/robustness.balanced_mix-results.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.ft&quot;</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>results_df[<span class="st">&quot;skips_and_weights&quot;</span>] <span class="op">=</span> results_df[<span class="st">&quot;skips_and_weights&quot;</span>].<span class="bu">apply</span>(<span class="bu">str</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>model, normed, skips_and_weights_str, auc, fprs, tprs, thresholds <span class="op">=</span> results_df[</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    (results_df[<span class="st">&quot;model&quot;</span>] <span class="op">==</span> model) <span class="op">&amp;</span> (results_df[<span class="st">&quot;normed&quot;</span>] <span class="op">==</span> normed) <span class="op">&amp;</span> (results_df[<span class="st">&quot;skips_and_weights&quot;</span>] <span class="op">==</span> <span class="bu">str</span>(np.array(skips_and_weights)))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>].iloc[<span class="dv">0</span>]</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:11:14.906132Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:11:14.905841Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:11:29.005498Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:11:29.004629Z&quot;}" data-papermill="{&quot;duration&quot;:14.114814,&quot;end_time&quot;:&quot;2023-03-25T10:11:29.009704&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:11:14.894890&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="17">
+<div class="sourceCode" id="cb15"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {}</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity <span class="kw">in</span> [<span class="fl">0.8</span>, <span class="fl">0.9</span>]:</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    threshold <span class="op">=</span> [threshold <span class="cf">for</span> tpr, threshold <span class="kw">in</span> <span class="bu">zip</span>(tprs, thresholds) <span class="cf">if</span> tpr <span class="op">&gt;=</span> sensitivity][<span class="dv">0</span>]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> predict(pp_b2, clf, threshold, df_b2_pp, df_b2)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>    data[sensitivity] <span class="op">=</span> {</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;df&#39;</span>: df_pred,  <span class="co"># dataframe with predicted values,</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="st">&#39;threshold&#39;</span>: threshold,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    }</span></code></pre></div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:11:29.029678Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:11:29.029151Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:11:29.034214Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:11:29.033677Z&quot;}" data-papermill="{&quot;duration&quot;:0.019622,&quot;end_time&quot;:&quot;2023-03-25T10:11:29.037390&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:11:29.017768&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="18">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc(df_n):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rate(df_h):</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>        dns_packets <span class="op">=</span> df_h[df_h[<span class="st">&quot;IsDoHPredicted&quot;</span>] <span class="op">==</span> <span class="va">True</span>][<span class="st">&quot;uint32 PACKETS&quot;</span>].<span class="bu">sum</span>()  <span class="co"># outgoing packets</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>        non_dns_ips <span class="op">=</span> <span class="bu">set</span>(df_h[df_h[<span class="st">&quot;IsDoHPredicted&quot;</span>] <span class="op">==</span> <span class="va">False</span>][<span class="st">&quot;ipaddr SRC_IP&quot;</span>].unique()).union(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="bu">set</span>(df_h[df_h[<span class="st">&quot;IsDoHPredicted&quot;</span>] <span class="op">==</span> <span class="va">False</span>][<span class="st">&quot;ipaddr DST_IP&quot;</span>].unique()))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>        rate <span class="op">=</span> <span class="bu">float</span>(dns_packets) <span class="op">/</span> (<span class="fl">1.0</span> <span class="op">+</span> <span class="bu">len</span>(non_dns_ips))</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> {<span class="st">&quot;dns_packets&quot;</span>: dns_packets, <span class="st">&quot;non_dns&quot;</span>: <span class="bu">len</span>(non_dns_ips), <span class="st">&quot;rate&quot;</span>: rate, <span class="st">&quot;rate_log&quot;</span>: np.log(rate)}</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> pd.DataFrame({ ip: rate(grp) <span class="cf">for</span> ip, grp <span class="kw">in</span> df_n.groupby([<span class="st">&quot;ipaddr SRC_IP&quot;</span>]) }).T.reset_index()</span></code></pre></div>
+</div>
+<section id="calculate-ratio-on-the-whole-dataset" class="level4" data-number="1.0.2.1">
+<h4 data-number="1.0.2.1"><span class="header-section-number">1.0.2.1</span> Calculate ratio on the whole dataset</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:11:29.069010Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:11:29.068593Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:15:30.694733Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:15:30.693730Z&quot;}" data-papermill="{&quot;duration&quot;:241.638305,&quot;end_time&quot;:&quot;2023-03-25T10:15:30.697082&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:11:29.058777&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="19">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> value[<span class="st">&quot;df&quot;</span>]</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    local_df <span class="op">=</span> df_pred[df_pred[<span class="st">&quot;ipaddr SRC_IP&quot;</span>].<span class="bu">str</span>.startswith(<span class="st">&quot;192.168&quot;</span>)]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    display(calc(local_df))</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.8</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">dns_packets</th>
+<th data-quarto-table-cell-role="th">non_dns</th>
+<th data-quarto-table-cell-role="th">rate</th>
+<th data-quarto-table-cell-role="th">rate_log</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>192.168.1.1</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>192.168.2.149</td>
+<td>230029.0</td>
+<td>4508.0</td>
+<td>51.015525</td>
+<td>3.932130</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>192.168.2.217</td>
+<td>334045.0</td>
+<td>17.0</td>
+<td>18558.055556</td>
+<td>9.828659</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>192.168.2.249</td>
+<td>140504.0</td>
+<td>3575.0</td>
+<td>39.290828</td>
+<td>3.670991</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>192.168.2.42</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.9</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">dns_packets</th>
+<th data-quarto-table-cell-role="th">non_dns</th>
+<th data-quarto-table-cell-role="th">rate</th>
+<th data-quarto-table-cell-role="th">rate_log</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>192.168.1.1</td>
+<td>0.0</td>
+<td>2.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>192.168.2.149</td>
+<td>271287.0</td>
+<td>4303.0</td>
+<td>63.031366</td>
+<td>4.143632</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>192.168.2.217</td>
+<td>609350.0</td>
+<td>17.0</td>
+<td>33852.777778</td>
+<td>10.429776</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>192.168.2.249</td>
+<td>184519.0</td>
+<td>3414.0</td>
+<td>54.031918</td>
+<td>3.989575</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>192.168.2.42</td>
+<td>0.0</td>
+<td>5.0</td>
+<td>0.000000</td>
+<td>-inf</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="split-into-time-windows" class="level4" data-number="1.0.2.2">
+<h4 data-number="1.0.2.2"><span class="header-section-number">1.0.2.2</span> Split into time windows</h4>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:15:30.734619Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:15:30.734184Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:15:32.399858Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:15:32.399189Z&quot;}" data-papermill="{&quot;duration&quot;:1.675002,&quot;end_time&quot;:&quot;2023-03-25T10:15:32.401230&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:15:30.726228&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="20">
+<div class="sourceCode" id="cb20"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>min_ts <span class="op">=</span> df_b2[<span class="st">&quot;time TIME_FIRST&quot;</span>].<span class="bu">apply</span>(dateutil.parser.parse).<span class="bu">min</span>()</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>min_ts</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="20">
+<pre><code>Timestamp(&#39;2023-03-23 14:50:04.316951&#39;)</code></pre>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:15:32.419347Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:15:32.419013Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:15:44.233481Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:15:44.231604Z&quot;}" data-papermill="{&quot;duration&quot;:11.825735,&quot;end_time&quot;:&quot;2023-03-25T10:15:44.235394&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:15:32.409659&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="21">
+<div class="sourceCode" id="cb22"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>local_ips <span class="op">=</span> df_b2[df_b2[<span class="st">&quot;ipaddr SRC_IP&quot;</span>].<span class="bu">str</span>.startswith(<span class="st">&quot;192.168&quot;</span>)][<span class="st">&quot;ipaddr SRC_IP&quot;</span>].unique().tolist()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>local_ips</span></code></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<pre><code>[&#39;192.168.2.249&#39;,
+ &#39;192.168.2.149&#39;,
+ &#39;192.168.2.42&#39;,
+ &#39;192.168.2.217&#39;,
+ &#39;192.168.1.1&#39;]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-25T10:15:44.310399Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-25T10:15:44.274250Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-25T10:28:51.529867Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-25T10:28:51.528869Z&quot;}" data-papermill="{&quot;duration&quot;:787.283467,&quot;end_time&quot;:&quot;2023-03-25T10:28:51.531969&quot;,&quot;exception&quot;:false,&quot;start_time&quot;:&quot;2023-03-25T10:15:44.248502&quot;,&quot;status&quot;:&quot;completed&quot;}" data-tags="[]" data-execution_count="22">
+<div class="sourceCode" id="cb24"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>f <span class="op">=</span> <span class="st">&#39;3min&#39;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> value[<span class="st">&quot;df&quot;</span>]</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    local_df <span class="op">=</span> df_pred[df_pred[<span class="st">&quot;ipaddr SRC_IP&quot;</span>].<span class="bu">str</span>.startswith(<span class="st">&quot;192.168&quot;</span>)].copy()</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    local_df[<span class="st">&quot;time TIME_FIRST&quot;</span>] <span class="op">=</span> local_df[<span class="st">&quot;time TIME_FIRST&quot;</span>].<span class="bu">apply</span>(dateutil.parser.parse)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>    calc_ips <span class="op">=</span> {}</span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>    a1_t <span class="op">=</span> local_df.set_index([<span class="st">&quot;time TIME_FIRST&quot;</span>])</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>    df_resample <span class="op">=</span> a1_t.groupby(pd.Grouper(freq<span class="op">=</span>f, origin<span class="op">=</span>min_ts)).first()</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    times <span class="op">=</span> df_resample.index.tolist()</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>    ranges <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(times, times[<span class="dv">1</span>:]))</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> []</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ran <span class="kw">in</span> ranges:</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>        df_ran <span class="op">=</span> a1_t[(a1_t.index <span class="op">&gt;</span> ran[<span class="dv">0</span>]) <span class="op">&amp;</span> (a1_t.index <span class="op">&lt;</span> ran[<span class="dv">1</span>])]</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>        df_calc <span class="op">=</span> calc(df_ran)</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>        df_calc[<span class="st">&quot;ts&quot;</span>] <span class="op">=</span> ran[<span class="dv">0</span>]</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>        df_calcs.append(df_calc)</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>    value[<span class="st">&quot;df_calc&quot;</span>] <span class="op">=</span> pd.concat(df_calcs).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.8</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.9</code></pre>
+</div>
+</div>
+<div id="fig-rate_log-flubot-exp-1-4" class="quarto-figure quarto-figure-center">
+<figure>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python cell-code"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    fig, axs <span class="op">=</span> plt.subplots(ncols<span class="op">=</span><span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> value[<span class="st">&quot;df_calc&quot;</span>]</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> host <span class="kw">in</span> local_ips:</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>        df_calc_host <span class="op">=</span> df_calcs[df_calcs[<span class="st">&quot;index&quot;</span>] <span class="op">==</span> host].set_index(<span class="st">&quot;ts&quot;</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        df_calc_host[<span class="st">&quot;rate_log&quot;</span>].plot(label<span class="op">=</span><span class="ss">f&#39;</span><span class="sc">{</span>host<span class="sc">}</span><span class="ss">&#39;</span>, ax<span class="op">=</span>axs)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>    plt.ylim(ymin<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f&quot;Sensitivity: </span><span class="sc">{</span>sensitivity<span class="sc">}</span><span class="ss">, threshold: </span><span class="sc">{</span>value[<span class="st">&#39;threshold&#39;</span>]<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.8</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-rate_log-flubot-exp-1-4-1" class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="gen-flubot-detection-RF-normed-2-4-0-0_files/figure-html/fig-rate_log-flubot-exp-1-4-output-2.png" class="img-fluid" data-ref-parent="fig-rate_log-flubot-exp-1-4" /></p>
+<p><figcaption>(a) sensitivity 0.8</figcaption></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.9</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-rate_log-flubot-exp-1-4-2" class="quarto-figure quarto-figure-center">
+<figure>
+<p><img src="gen-flubot-detection-RF-normed-2-4-0-0_files/figure-html/fig-rate_log-flubot-exp-1-4-output-4.png" class="img-fluid" data-ref-parent="fig-rate_log-flubot-exp-1-4" /></p>
+<p><figcaption>(b) sensitivity 0.9</figcaption></p>
+</figure>
+</div>
+</div>
+<p><figcaption>Figure 1.1: <span class="math inline">\(\rho(a)\)</span> plot for all instances (B2 period)</figcaption></p>
+</figure>
+</div>
+<div id="quarto-navigation-envelope" class="hidden">
+<p><span class="hidden" data-render-id="quarto-int-sidebar-title">2023-03-08-flubot-multiple-nodes</span> <span class="hidden" data-render-id="quarto-int-navbar-title">2023-03-08-flubot-multiple-nodes</span> <span class="hidden" data-render-id="quarto-int-next"><span class="chapter-number">14</span>  <span class="chapter-title">Detect malware (RF normed-2-4-2-4)</span></span> <span class="hidden" data-render-id="quarto-int-prev"><span class="chapter-number">12</span>  <span class="chapter-title">Detect malware (RF unnormed-0-0-0-0)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/index.html"><span class="chapter-number">1</span>  <span class="chapter-title">Overview</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-1">Experiment 1: “Clean room” with multiple Androids</span> <span class="hidden" data-render-id="quarto-int-sidebar:/experiment.html"><span class="chapter-number">2</span>  <span class="chapter-title">Design and log of experiment 1</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/analyze-collected-dataset.html"><span class="chapter-number">3</span>  <span class="chapter-title">Analyze generated dataset</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-2">Train DoH detection models</span> <span class="hidden" data-render-id="quarto-int-sidebar:/train-model-plan.html"><span class="chapter-number">4</span>  <span class="chapter-title">Training models</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/sample-Jerabek2022-dataset.html"><span class="chapter-number">5</span>  <span class="chapter-title">Sample learning dataset</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/cached-preprocessing-and-labeling.html"><span class="chapter-number">6</span>  <span class="chapter-title">Label learning dataset</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/build-models.html"><span class="chapter-number">7</span>  <span class="chapter-title">Build models</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/choose-model.html"><span class="chapter-number">8</span>  <span class="chapter-title">Choose model</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/choose-threshold.html"><span class="chapter-number">9</span>  <span class="chapter-title">Selecting threshold</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-3">Experiment 1: Malware detection</span> <span class="hidden" data-render-id="quarto-int-sidebar:/flubot-detection-overview.html"><span class="chapter-number">10</span>  <span class="chapter-title">Malware detection overview</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-0-0-0-0.html"><span class="chapter-number">11</span>  <span class="chapter-title">Detect malware (RF normed-0-0-0-0)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.html"><span class="chapter-number">12</span>  <span class="chapter-title">Detect malware (RF unnormed-0-0-0-0)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.html"><span class="chapter-number">13</span>  <span class="chapter-title">Detect malware (RF normed-2-4-0-0)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.html"><span class="chapter-number">14</span>  <span class="chapter-title">Detect malware (RF normed-2-4-2-4)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.html"><span class="chapter-number">15</span>  <span class="chapter-title">Detect malware (RF normed-1-0-0-0)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-0-0-0.html"><span class="chapter-number">16</span>  <span class="chapter-title">Detect malware (RF unnormed-2-0-0-0)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-4-0-0.html"><span class="chapter-number">17</span>  <span class="chapter-title">Detect malware (RF unnormed-2-4-0-0)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-1-4-1-4.html"><span class="chapter-number">18</span>  <span class="chapter-title">Detect malware (RF unnormed-1-4-1-4)</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-4">Experiment 2: Real-world scenario</span> <span class="hidden" data-render-id="quarto-int-sidebar:/flubot-detection-2-overview.html"><span class="chapter-number">19</span>  <span class="chapter-title">Design and log of experiment 2</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/analyze-collected-dataset-2.html"><span class="chapter-number">20</span>  <span class="chapter-title">Analyze generated dataset</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/notebooks/flubot-detection-second.html"><span class="chapter-number">21</span>  <span class="chapter-title">Detect malware</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/summary.html"><span class="chapter-number">22</span>  <span class="chapter-title">Results</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/references.html">References</span> <span class="hidden" data-render-id="quarto-int-sidebar:quarto-sidebar-section-5">Appendices</span> <span class="hidden" data-render-id="quarto-int-sidebar:/appendices.html"><span class="chapter-number">A</span>  <span class="chapter-title">Library</span></span> <span class="hidden" data-render-id="quarto-int-sidebar:/appendices2.html"><span class="chapter-number">B</span>  <span class="chapter-title">Scripts</span></span></p>
+</div>
+<div id="quarto-meta-markdown" class="hidden">
+<p><span class="hidden" data-render-id="quarto-metatitle">2023-03-08-flubot-multiple-nodes - Detect malware (RF normed-2-4-0-0)</span> <span class="hidden" data-render-id="quarto-twittercardtitle">2023-03-08-flubot-multiple-nodes - Detect malware (RF normed-2-4-0-0)</span> <span class="hidden" data-render-id="quarto-ogcardtitle">2023-03-08-flubot-multiple-nodes - Detect malware (RF normed-2-4-0-0)</span> <span class="hidden" data-render-id="quarto-metasitename">2023-03-08-flubot-multiple-nodes</span> <span class="hidden" data-render-id="quarto-twittercarddesc"></span> <span class="hidden" data-render-id="quarto-ogcardddesc"></span></p>
+</div>
+</section>
+</section>
+</section>
+     </main> <!-- /main -->  <script id = "quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>  <nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a  href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class='chapter-number'>12</span>  <span class='chapter-title'>Detect malware (RF unnormed-0-0-0-0)</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a  href="/notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.html" class="pagination-link">
+        <span class="nav-page-text"><span class='chapter-number'>14</span>  <span class='chapter-title'>Detect malware (RF normed-2-4-2-4)</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content --> 
+  </body>
+</html>

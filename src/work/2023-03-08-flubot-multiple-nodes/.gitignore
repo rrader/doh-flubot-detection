@@ -1,0 +1,7 @@
+/.quarto/
+_public
+*.saved
+*.labels
+*.features
+*.joblib
+*.7z

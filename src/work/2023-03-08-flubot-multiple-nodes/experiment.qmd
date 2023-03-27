@@ -1,0 +1,110 @@
+# Design and log of experiment 1 {#sec-experiment-design}
+
+Sandbox network layout (@fig-network):
+
+ - 3 Android nodes
+ - Linux machine with installed `adb` to install malware and control Android browser
+ - OpenWRT router with running tcpdump
+
+Android nodes:
+
+ - 192.168.2.149 Android with Chrome configuted **with DoH**
+ - 192.168.2.249 Android with Chrome configured for **plaintext DNS**
+ - 192.168.217 Android to be infected with FluBot
+
+![Network](imgs/network.drawio.png){#fig-network}
+
+## OpenWRT router configuration
+
+OpenWrt is provided with IPFIXprobe package installed from https://github.com/CESNET/Nemea-OpenWRT with
+
+ - pcap support
+ - NEMEA unirec support
+ - `pstats` plugin collects 100 first packets (30 by default) `PSTATS_MAXELEMCOUNT` = 100: `process/pstats.hpp:# define PSTATS_MAXELEMCOUNT 100`
+
+## Infection of Android with FluBot
+
+We install flubot to 192.168.2.217 Android using sample from [vx-underground](https://samples.vx-underground.org/samples/Families/Android.FluBot/Samples/5.2/4859ab9cd5efbe0d4f63799126110d744a42eff057fa22ff1bd11cb59b49608c.7z).
+
+`infect.sh`:
+
+```{.bash include="scripts/infect.sh" code-line-numbers="true"}
+```
+
+Then we need to allow "Flash Player" (flubot) permission for accessibility services and machine is infected.
+
+## Generate benign traffic
+
+On 192.168.2.149 and 192.168.2.249 machines we generate benign traffic. Both ot them are going to browse top 500 domains from the [moz.com](https://moz.com/top-500/download?table=top500Domains).
+
+To do that, we install the latest Chrome (>=83 with DoH support). [Chrome 111](https://www.apkmirror.com/apk/google-inc/chrome/chrome-111-0-5563-49-release/google-chrome-fast-secure-111-0-5563-49-9-android-apk-download/).
+
+On 192.168.2.149 we configure DoH (see @fig-chrome-doh).
+
+![Chrome configured to use DoH](imgs/android-chrome-doh.png){#fig-chrome-doh}
+
+Chrome installation:
+
+```
+adb shell settings put global verifier_verify_adb_installs 0
+adb install chrome.apk
+```
+
+Script `traffic.py` (@sec-scripts) randomly navigates both machines to different websites from the top 500 list. Once in a while it changes the DoH provider on the 192.168.2.149 machine from the predefined list:
+
+  - https://dns.google/dns-query
+  - https://cloudflare-dns.com/dns-query
+  - https://dns.quad9.net/dns-query
+  - https://unfiltered.adguard-dns.com/dns-query
+  - https://doh.cleanbrowsing.org/doh/security-filter/
+  - https://freedns.controld.com/p0
+
+
+## Record traffic
+
+ 1. Start all instances @fig-capture-screenshot:
+ 2. Start `ipfixprobe` on `exp-outer-router.local`:
+
+`probe.sh`:
+
+```{.bash include="scripts/probe.sh" code-line-numbers="true"}
+```
+
+ 3. Start logger (IPFIX collector from the `ipfixprobe`) `conda.local`:
+
+`logger.sh`:
+
+```{.bash include="scripts/logger.sh" code-line-numbers="true"}
+```
+
+Captured traffic is saved to the CSV file using the `logger` tool from the NEMEA framework @fig-capture.
+
+![Capture](imgs/capture.png){#fig-capture}
+
+
+# Experiment {#sec-experiment-log}
+
+Experiment is conducted in two parts (see @fig-timeline):
+
+![Timeline](imgs/timeline.png){#fig-timeline}
+
+ - B1: We collect a sample of traffic from the monitored network to train the scaler (see @sec-scaler)
+ - B2: We collect benign (A1) and infected (A2) traffic to validate the malware detector
+
+## Log
+
+|Timestamp |Time from start (minutes)|Duration|Log                                                |Save                  |
+|----------|-------------------------|--------|---------------------------------------------------|------------------------|
+|4:07:16 PM|0                        |        |Start data collection (ipfixprobe and logger)      |                        |
+|4:08:00 PM|1                        |1       |Started traffic.py                                 |                        |
+|4:49:21 PM|42                       |41      |Stop data collection                               | save result to v5_1.csv|
+|4:50:21 PM|43                       |1       |Start data collection again (ipfixprobe and logger)|                        |
+|5:50:22 PM|103                      |60      |Started infect.sh                                  |                        |
+|6:50:31 PM|163                      |60      |Stop data collection                               | save result to v5_2.csv|
+
+## Artifacts
+
+ - B1 part of traffic saved into `v5_1.csv`
+ - B2 part of traffic saved into `v5_2.csv`
+ - `traffic.py` log is saved in `v5_exp.log`
+ - High-level log with timestamps of experiment is saved in `v5_log.csv`

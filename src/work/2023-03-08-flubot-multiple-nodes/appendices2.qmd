@@ -1,0 +1,31 @@
+---
+title: "Scripts"
+---
+
+## Data collection scripts {#sec-scripts}
+
+### Traffic capture tools
+
+`probe.sh`:
+
+```{.bash include="scripts/probe.sh" code-line-numbers="true"}
+```
+
+`logger.sh`:
+
+```{.bash include="scripts/logger.sh" code-line-numbers="true"}
+```
+
+### traffic.py for Experiment 1
+`traffic.py`:
+
+```{.python include="scripts/traffic.py" code-line-numbers="true"}
+```
+
+### traffic.py for Experiment 2
+
+`traffic2.py`:
+
+```{.python include="scripts/traffic2.py" code-line-numbers="true"}
+```
+

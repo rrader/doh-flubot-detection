@@ -1,0 +1,53 @@
+# Results
+
+## DNS-over-HTTPS detection model training results
+
+We have built a number of models based on different algorithms and hyperparameters. Models were evaluated on the "robustness": ability to detect DoH not only in the same network where training data was recorded, but on other networks too. The test dataset containing 50% from the test sample of training data, and 50% from the recorded traffic from sandbox network. ROCs of these models are in @fig-models-roc.
+
+{{< embed notebooks/choose-model.ipynb#fig-models-roc >}}
+
+Top 3 models with normalization based on their AUC:
+
+{{< embed notebooks/choose-model.ipynb#top3-normed >}}
+
+Top 3 models without normalization based on their AUC:
+
+{{< embed notebooks/choose-model.ipynb#top3-unnormed >}}
+
+## Flubot detection "Clean room" experiment 1 results
+
+For this experiment we took 6 models mentioned above, and two models (normed and unnormed) with hyperparameters equal to [0,0,0,0], for the baseline comparison.
+
+Interestingly, normalized model performed better than the unnormalized, which aligns with the original hypothesis but doesn't align with the training test model comparison.
+
+In the result, normed models with non-0 hyperparameters perform better or same as the baseline 0-0-0-0 models.
+
+Unnormed models with non-0 hyperparameters perform worse than the baseline 0-0-0-0 models.
+
+### Baseline models
+
+RF-unnormed-0-0-0-0:
+
+{{< embed notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.ipynb#fig-rate_log-flubot-exp-1-1 >}}
+
+RF-normed-0-0-0-0:
+
+{{< embed notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-0-0-0-0.ipynb#fig-rate_log-flubot-exp-1-2 >}}
+
+### Best unnormed and normed models
+
+RF-unnormed-2-0-0-0:
+
+{{< embed notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-0-0-0.ipynb#fig-rate_log-flubot-exp-1-3 >}}
+
+RF-normed-2-4-0-0:
+
+{{< embed notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.ipynb#fig-rate_log-flubot-exp-1-4 >}}
+
+## Flubot detection "Real-world" experiment 2 results
+
+In the last experiment we took the model which performed the best on the first experiment (RF-normed-2-4-0-0) and used to detect the machine browsing benign websites which is exposed to the FluBot malware at some point.
+
+ARIMA time-series model was used to learn the hosts normal behavior and detect outliers (FluBot infection):
+
+{{< embed notebooks/flubot-detection-second.ipynb#fig-real-world-flubot-detection-1 >}}

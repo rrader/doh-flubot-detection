@@ -1,0 +1,3 @@
+# Experiment 1: "Clean room" with multiple Androids
+
+In this part we collect data from 3 Android devices on the sandbox network

@@ -1,0 +1,8 @@
+# Experiment 2: Real-world scenario
+
+In this part we run the malware detection in the real-world scenario, where a single Android machine is first DoH benign traffic
+
+In this experiment we have 2 Android x86 machines:
+
+ - 192.168.2.217 - machine with mixed traffic, benign in A1 period; benign and infected with FluBot in A2 period (see @fig-timeline)
+ - 192.168.2.149 - clean machine with DoH in Chrome enabled

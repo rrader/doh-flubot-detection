@@ -1,0 +1,53 @@
+# Design and log of experiment 2
+
+First experiment (see @sec-experiment-design) was a "clean room" experiment, with an infected machine without benign traffic, and two control machines with benign traffic only.
+
+In second experiment we conduct a real-world scenario where a machine which is used to browse internet and generate benign traffic is being infected, and generate a "mixed" benign and malicious traffic.
+
+For this experiment we use modified `traffic.py` - `traffic2.py`. Main differences:
+
+ - No change of DoH resolvers, they are selected on the beginning of the experiment
+ - No DNS cache clearing each 10 requests, to make it closer to real-world browsing: frequent cache clearing artificially increases the `\rho(a)` value.
+
+## Network setup
+
+We configured 2 Android x86 machines:
+
+ - 192.168.2.217 - machine with mixed traffic, benign in A1 period; benign and infected with FluBot in A2 period (see @fig-timeline)
+ - 192.168.2.149 - clean machine with DoH in Chrome enabled
+
+Also, same as in the first experiment, we have:
+
+ - OpenWRT router of sandbox network with IPFIXprobe running
+ - Linux machine inside the sandbox network, which is used to control Android machines via ADB shell
+ - Linux machine outside of the network which is used to collect traffic from IPFIXprobe and convert it to CSV
+
+## Experiment plan
+
+We conduct an experiment with the plan similar to the first one, collecting data in two (B1 and B2) periods (see @fig-timeline).
+
+![Timeline](imgs/timeline.png)
+
+ - B1: We collect a sample of traffic from the monitored network to train the scaler (see @sec-scaler)
+ - B2: We collect benign (A1) and infected (A2) traffic to validate the malware detector
+
+## Log
+
+|Timestamp  |Time from start (minutes)|Duration|Log                                                    |
+|-----------|--------------|--------|-------------------------------------------------------|
+|11:00:02 AM|0             |0       |B1: Start data collection (ipfixprobe and logger)      |
+|11:00:59 AM|1             |1       |Started traffic2.py                                    |
+|11:17:15 AM|17            |16      |Stop data collection, save result to v7_1.csv          |
+|11:36:11 AM|36            |19      |Stop traffic2.py, save v7_exp_1.log                    |
+|11:44:50 AM|45            |9       |B2: Start data collection again (ipfixprobe and logger)|
+|11:46:00 AM|46            |1       |Started traffic2.py                                    |
+|11:56:59 AM|57            |11      |Started infect.sh                                      |
+|12:14:18 PM|74            |17      |Stop data collection, save result to v7_2.csv          |
+|12:14:31 PM|74            |0       |Stop traffic2.py, save v7_exp_2.log                    |
+
+## Artifacts
+
+ - B1 part of traffic saved into `v7_1.csv`
+ - B2 part of traffic saved into `v7_2.csv`
+ - `traffic2.py` log is saved in `v7_exp_1.log` and `v7_exp_2.log` (before and after infection)
+ - High-level log with timestamps of experiment is saved in `v7_log.csv`

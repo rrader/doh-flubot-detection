@@ -1,0 +1,3 @@
+# Train DoH detection models
+
+In this part we build a model on the @Jerabek2022Collection dataset, then select a model using test set built partly from training data, partly from the data collected from benign instances of sandbox network environment.

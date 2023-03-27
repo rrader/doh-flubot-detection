@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.290">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>2023-03-08-flubot-multiple-nodes - 5&nbsp; Sample learning dataset</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../notebooks/cached-preprocessing-and-labeling.html" rel="next">
+<link href="../train-model-plan.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../train-model.html">Train DoH detection models</a></li><li class="breadcrumb-item"><a href="../notebooks/sample-Jerabek2022-dataset.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sample learning dataset</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">2023-03-08-flubot-multiple-nodes</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../collect-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: "Clean room" with multiple Androids</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiment.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Design and log of experiment 1</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/analyze-collected-dataset.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Analyze generated dataset</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../train-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Train DoH detection models</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../train-model-plan.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Training models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/sample-Jerabek2022-dataset.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sample learning dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/cached-preprocessing-and-labeling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Label learning dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/build-models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Build models</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/choose-model.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Choose model</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/choose-threshold.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Selecting threshold</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../flubot-detection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 1: Malware detection</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../flubot-detection-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Malware detection overview</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-0-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-0-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-0-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-2-4-2-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-2-4-2-4)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-normed-1-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Detect malware (RF normed-1-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-0-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-2-0-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-2-4-0-0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-2-4-0-0)</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-try-models/gen-flubot-detection-RF-unnormed-1-4-1-4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Detect malware (RF unnormed-1-4-1-4)</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../flubot-detection-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Experiment 2: Real-world scenario</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../flubot-detection-2-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Design and log of experiment 2</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/analyze-collected-dataset-2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Analyze generated dataset</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../notebooks/flubot-detection-second.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Detect malware</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Library</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendices2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Scripts</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#real-world-traffic-sampling" id="toc-real-world-traffic-sampling" class="nav-link active" data-scroll-target="#real-world-traffic-sampling"><span class="header-section-number">5.1</span> Real world traffic sampling</a>
+  <ul class="collapse">
+  <li><a href="#sampled-to-10-of-doh-and-100-of-https-traffic" id="toc-sampled-to-10-of-doh-and-100-of-https-traffic" class="nav-link" data-scroll-target="#sampled-to-10-of-doh-and-100-of-https-traffic"><span class="header-section-number">5.1.1</span> Sampled to 10% of DoH and 100% of HTTPS traffic</a></li>
+  <li><a href="#sample-50k-doh-and-50k-https" id="toc-sample-50k-doh-and-50k-https" class="nav-link" data-scroll-target="#sample-50k-doh-and-50k-https"><span class="header-section-number">5.1.2</span> Sample 50k DoH and 50k HTTPS</a></li>
+  </ul></li>
+  <li><a href="#generated-traffic-sampling" id="toc-generated-traffic-sampling" class="nav-link" data-scroll-target="#generated-traffic-sampling"><span class="header-section-number">5.2</span> Generated traffic sampling</a>
+  <ul class="collapse">
+  <li><a href="#sampled-to-10" id="toc-sampled-to-10" class="nav-link" data-scroll-target="#sampled-to-10"><span class="header-section-number">5.2.1</span> Sampled to 10%:</a></li>
+  <li><a href="#sampled-to-50k-records" id="toc-sampled-to-50k-records" class="nav-link" data-scroll-target="#sampled-to-50k-records"><span class="header-section-number">5.2.2</span> Sampled to 50k records</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Sample learning dataset</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-21T20:04:55.346471Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-21T20:04:55.346311Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-21T20:04:55.349042Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-21T20:04:55.348673Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-21T20:04:55.346457Z&quot;}" data-tags="[]" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> detect_common <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="real-world-traffic-sampling" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="real-world-traffic-sampling"><span class="header-section-number">5.1</span> Real world traffic sampling</h2>
+<section id="sampled-to-10-of-doh-and-100-of-https-traffic" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="sampled-to-10-of-doh-and-100-of-https-traffic"><span class="header-section-number">5.1.1</span> Sampled to 10% of DoH and 100% of HTTPS traffic</h3>
+<p>DoH and HTTPS are sampled separately, because in the resulting dataset we may want to have different ratio of DoH and HTTPS traffic to get more benign samples.</p>
+<div class="cell" data-tags="[]" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>prefix <span class="op">=</span> basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100/"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"files:"</span>, <span class="bu">len</span>(<span class="bu">list</span>(enum_csv(prefix))))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, f <span class="kw">in</span> <span class="bu">enumerate</span>(f <span class="cf">for</span> f <span class="kw">in</span> enum_csv(prefix) <span class="cf">if</span> (<span class="st">'DoH-Real-World'</span> <span class="kw">in</span> <span class="bu">str</span>(f)) <span class="kw">and</span> (<span class="st">'DoH'</span> <span class="kw">in</span> os.path.basename(f))):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>        kwargs <span class="op">=</span> {<span class="st">"mode"</span>: <span class="st">"w"</span>, <span class="st">"header"</span>: <span class="va">True</span>}</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        kwargs <span class="op">=</span> {<span class="st">"mode"</span>: <span class="st">"a"</span>, <span class="st">"header"</span>: <span class="va">False</span>}</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(f)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    df_sampled <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(os.path.basename(f), <span class="st">"size:"</span>, <span class="bu">len</span>(df), <span class="st">"; sampled size:"</span>, <span class="bu">len</span>(df_sampled))</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    df_sampled.to_csv(</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>        basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-01-real-world-doh.csv"</span>, </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>kwargs</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>files: 81
+DoH-01082021-48h.pcapng.trapcap.csv size: 1108565 ; sampled size: 110856</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-03082021-48h.pcapng.trapcap.csv size: 1011530 ; sampled size: 101153</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-06102021-48h.pcapng.trapcap.csv size: 3588446 ; sampled size: 358845</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-08102021-48h.pcapng.trapcap.csv size: 1392097 ; sampled size: 139210</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-13072021-48h.pcapng.trapcap.csv size: 1272538 ; sampled size: 127254</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-15072021-48h.pcapng.trapcap.csv size: 1079644 ; sampled size: 107964</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-17072021-48h.pcapng.trapcap.csv size: 787199 ; sampled size: 78720</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-19072021-48h.pcapng.trapcap.csv size: 1349750 ; sampled size: 134975</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-27072021-48h.pcapng.trapcap.csv size: 1241409 ; sampled size: 124141</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-28062021-24h.pcapng.trapcap.csv size: 1019033 ; sampled size: 101903</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>DoH-30072021-48h.pcapng.trapcap.csv size: 633728 ; sampled size: 63373</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prefix <span class="op">=</span> basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100/"</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"files:"</span>, <span class="bu">len</span>(<span class="bu">list</span>(enum_csv(prefix))))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, f <span class="kw">in</span> <span class="bu">enumerate</span>(f <span class="cf">for</span> f <span class="kw">in</span> enum_csv(prefix) <span class="cf">if</span> (<span class="st">'DoH-Real-World'</span> <span class="kw">in</span> <span class="bu">str</span>(f)) <span class="kw">and</span> (<span class="st">'HTTPS'</span> <span class="kw">in</span> os.path.basename(f))):</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        kwargs <span class="op">=</span> {<span class="st">"mode"</span>: <span class="st">"w"</span>, <span class="st">"header"</span>: <span class="va">True</span>}</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        kwargs <span class="op">=</span> {<span class="st">"mode"</span>: <span class="st">"a"</span>, <span class="st">"header"</span>: <span class="va">False</span>}</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(f)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    df_sampled <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="fl">1.0</span>, random_state<span class="op">=</span><span class="dv">42</span>)  <span class="co"># no sampling</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(os.path.basename(f), <span class="st">"size:"</span>, <span class="bu">len</span>(df), <span class="st">"; sampled size:"</span>, <span class="bu">len</span>(df_sampled))</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    df_sampled.to_csv(</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>        basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-1-real-world-https.csv"</span>, </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>kwargs</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>files: 81
+HTTPS-04102021-01h-1.pcapng.trapcap.csv size: 30575 ; sampled size: 30575</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HTTPS-04102021-01h-2.pcapng.trapcap.csv size: 35537 ; sampled size: 35537</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HTTPS-04102021-02h.pcapng.trapcap.csv size: 33113 ; sampled size: 33113</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HTTPS-20102021-10h.pcapng.trapcap.csv size: 104214 ; sampled size: 104214</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HTTPS-20102021-12h.pcapng.trapcap.csv size: 85777 ; sampled size: 85777</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>HTTPS-21102021-12h.pcapng.trapcap.csv size: 81300 ; sampled size: 81300</code></pre>
+</div>
+</div>
+<ul>
+<li><code>unirec-csv-p100/unirec/DoH-Gen-C-CFGHOQS/data/generated/pcap/chrome/ffmuc/1_chrome_ffmuc.pcap.trapcap.csv</code> is empty, I will remove it</li>
+<li><strong>Question</strong>: Real-World dataset contains pcap, however readme states it can’t be distributed because requires anonymization</li>
+</ul>
+<div class="cell" data-tags="[]" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-01-real-world-doh.csv"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>df.to_feather(basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-01-real-world-doh.ft"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>1448394</code></pre>
+</div>
+</div>
+<div class="cell" data-tags="[]" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-1-real-world-https.csv"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>df.to_feather(basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-1-real-world-https.ft"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<pre><code>370516</code></pre>
+</div>
+</div>
+</section>
+<section id="sample-50k-doh-and-50k-https" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="sample-50k-doh-and-50k-https"><span class="header-section-number">5.1.2</span> Sample 50k DoH and 50k HTTPS</h3>
+<div class="cell" data-tags="[]" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># df = pd.read_feather("/jupyter/warehouse/Jerabek2022Collection-unirec/unirec-csv-p100-sample-001-real-world-doh.ft")</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># df.sample(n=50000, random_state=42).reset_index(drop=True).to_feather(</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     "/jupyter/warehouse/Jerabek2022Collection-unirec/unirec-csv-p100-sample-50k-real-world-doh.ft"</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a><span class="co"># df = pd.read_feather("/jupyter/warehouse/Jerabek2022Collection-unirec/unirec-csv-p100-sample-001-real-world-https.ft")</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># df.sample(n=50000, random_state=42).reset_index(drop=True).to_feather(</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     "/jupyter/warehouse/Jerabek2022Collection-unirec/unirec-csv-p100-sample-50k-real-world-https.ft"</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="generated-traffic-sampling" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="generated-traffic-sampling"><span class="header-section-number">5.2</span> Generated traffic sampling</h2>
+<section id="sampled-to-10" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="sampled-to-10"><span class="header-section-number">5.2.1</span> Sampled to 10%:</h3>
+<div class="cell" data-tags="[]" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>prefix <span class="op">=</span> basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100/"</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"files:"</span>, <span class="bu">len</span>(<span class="bu">list</span>(enum_csv(prefix))))</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, f <span class="kw">in</span> <span class="bu">enumerate</span>(f <span class="cf">for</span> f <span class="kw">in</span> enum_csv(prefix) <span class="cf">if</span> <span class="st">'DoH-Real-World'</span> <span class="kw">not</span> <span class="kw">in</span> <span class="bu">str</span>(f)):</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>        kwargs <span class="op">=</span> {<span class="st">"mode"</span>: <span class="st">"w"</span>, <span class="st">"header"</span>: <span class="va">True</span>}</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        kwargs <span class="op">=</span> {<span class="st">"mode"</span>: <span class="st">"a"</span>, <span class="st">"header"</span>: <span class="va">False</span>}</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.read_csv(f)</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    df_sampled <span class="op">=</span> df.sample(frac<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(os.path.basename(f), <span class="st">"size:"</span>, <span class="bu">len</span>(df), <span class="st">"; sampled size:"</span>, <span class="bu">len</span>(df_sampled))</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    df_sampled.to_csv(</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>        basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-01-generated.csv"</span>, </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>        <span class="op">**</span>kwargs</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>files: 81
+0_chrome_adguard.pcap.trapcap.csv size: 23652 ; sampled size: 2365
+1_chrome_adguard.pcap.trapcap.csv size: 23001 ; sampled size: 2300
+0_chrome_ahadns.pcap.trapcap.csv size: 23618 ; sampled size: 2362
+1_chrome_ahadns.pcap.trapcap.csv size: 23063 ; sampled size: 2306
+0_chrome_blahdns.pcap.trapcap.csv size: 18648 ; sampled size: 1865
+1_chrome_blahdns.pcap.trapcap.csv size: 19073 ; sampled size: 1907
+0_chrome_bravedns.pcap.trapcap.csv size: 35271 ; sampled size: 3527
+1_chrome_bravedns.pcap.trapcap.csv size: 35753 ; sampled size: 3575
+0_chrome_comcast.pcap.trapcap.csv size: 37097 ; sampled size: 3710
+1_chrome_comcast.pcap.trapcap.csv size: 38072 ; sampled size: 3807
+0_chrome_cznic.pcap.trapcap.csv size: 34198 ; sampled size: 3420
+1_chrome_cznic.pcap.trapcap.csv size: 33623 ; sampled size: 3362
+0_chrome_cloudflare.pcap.trapcap.csv size: 30804 ; sampled size: 3080
+1_chrome_cloudflare.pcap.trapcap.csv size: 34577 ; sampled size: 3458
+0_chrome_ffmuc.pcap.trapcap.csv size: 11669 ; sampled size: 1167
+0_chrome_ffmuc.pcap.trapcap-checkpoint.csv size: 11669 ; sampled size: 1167
+0_chrome_google.pcap.trapcap.csv size: 34101 ; sampled size: 3410
+1_chrome_google.pcap.trapcap.csv size: 33109 ; sampled size: 3311
+0_chrome_hostux.pcap.trapcap.csv size: 31416 ; sampled size: 3142
+1_chrome_hostux.pcap.trapcap.csv size: 30769 ; sampled size: 3077
+0_chrome_opendns.pcap.trapcap.csv size: 30691 ; sampled size: 3069
+1_chrome_opendns.pcap.trapcap.csv size: 29655 ; sampled size: 2966
+0_chrome_quad9.pcap.trapcap.csv size: 32409 ; sampled size: 3241
+1_chrome_quad9.pcap.trapcap.csv size: 31478 ; sampled size: 3148
+0_chrome_switch.pcap.trapcap.csv size: 31600 ; sampled size: 3160
+1_chrome_switch.pcap.trapcap.csv size: 32517 ; sampled size: 3252
+0_chrome_dnsforge.pcap.trapcap.csv size: 20354 ; sampled size: 2035
+1_chrome_dnsforge.pcap.trapcap.csv size: 20153 ; sampled size: 2015
+0_chrome_dnssb.pcap.trapcap.csv size: 31713 ; sampled size: 3171
+1_chrome_dnssb.pcap.trapcap.csv size: 32421 ; sampled size: 3242
+0_chrome_dohli.pcap.trapcap.csv size: 19 ; sampled size: 2
+1_chrome_dohli.pcap.trapcap.csv size: 35955 ; sampled size: 3596
+10_post_adguard.pcap.trapcap.csv size: 164808 ; sampled size: 16481
+11_get_adguard.pcap.trapcap.csv size: 166665 ; sampled size: 16666
+14_post_ahadns.pcap.trapcap.csv size: 116815 ; sampled size: 11682
+15_get_ahadns.pcap.trapcap.csv size: 115051 ; sampled size: 11505
+6_post_blahdns.pcap.trapcap.csv size: 177242 ; sampled size: 17724
+7_get_blahdns.pcap.trapcap.csv size: 177928 ; sampled size: 17793
+16_post_bravedns.pcap.trapcap.csv size: 110221 ; sampled size: 11022
+17_get_bravedns.pcap.trapcap.csv size: 108565 ; sampled size: 10856
+12_post_cloudflare.pcap.trapcap.csv size: 104344 ; sampled size: 10434
+13_get_cloudflare.pcap.trapcap.csv size: 105946 ; sampled size: 10595
+4_post_comcast.pcap.trapcap.csv size: 148266 ; sampled size: 14827
+5_get_comcast.pcap.trapcap.csv size: 151250 ; sampled size: 15125
+20_post_cznic.pcap.trapcap.csv size: 142975 ; sampled size: 14298
+21_get_cznic.pcap.trapcap.csv size: 137961 ; sampled size: 13796
+8_post_dnsforge.pcap.trapcap.csv size: 137647 ; sampled size: 13765
+9_get_dnsforge.pcap.trapcap.csv size: 142600 ; sampled size: 14260
+2_post_dnssb.pcap.trapcap.csv size: 118262 ; sampled size: 11826
+3_get_dnssb.pcap.trapcap.csv size: 116030 ; sampled size: 11603
+24_post_dohli.pcap.trapcap.csv size: 148400 ; sampled size: 14840
+25_get_dohli.pcap.trapcap.csv size: 146729 ; sampled size: 14673
+30_post_ffmuc.pcap.trapcap.csv size: 102224 ; sampled size: 10222
+31_get_ffmuc.pcap.trapcap.csv size: 102094 ; sampled size: 10209
+18_post_google.pcap.trapcap.csv size: 140524 ; sampled size: 14052
+19_get_google.pcap.trapcap.csv size: 141396 ; sampled size: 14140
+28_post_hostux.pcap.trapcap.csv size: 125728 ; sampled size: 12573
+29_get_hostux.pcap.trapcap.csv size: 121226 ; sampled size: 12123
+22_post_opendns.pcap.trapcap.csv size: 100798 ; sampled size: 10080
+23_get_opendns.pcap.trapcap.csv size: 101153 ; sampled size: 10115
+26_post_quad9.pcap.trapcap.csv size: 135104 ; sampled size: 13510
+27_get_quad9.pcap.trapcap.csv size: 135357 ; sampled size: 13536
+0_post_switch.pcap.trapcap.csv size: 147445 ; sampled size: 14744
+1_get_switch.pcap.trapcap.csv size: 150962 ; sampled size: 15096</code></pre>
+</div>
+</div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-21T20:09:49.278138Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-21T20:09:49.277780Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-21T20:10:00.587672Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-21T20:10:00.586312Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-21T20:09:49.278119Z&quot;}" data-tags="[]" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-01-generated.csv"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>df.to_feather(basepath <span class="op">+</span> <span class="st">"datasets/Jerabek2022Collection-unirec/unirec-csv-p100-sample-01-generated.ft"</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="6">
+<pre><code>513386</code></pre>
+</div>
+</div>
+</section>
+<section id="sampled-to-50k-records" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="sampled-to-50k-records"><span class="header-section-number">5.2.2</span> Sampled to 50k records</h3>
+<div class="cell" data-tags="[]" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># df = pd.read_feather("/jupyter/warehouse/Jerabek2022Collection-unirec/unirec-csv-p100-sample-005-generated.ft")</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co"># df.sample(n=50000, random_state=42).reset_index(drop=True).to_feather(</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     "/jupyter/warehouse/Jerabek2022Collection-unirec/unirec-csv-p100-sample-50k-generated.ft"</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../train-model-plan.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Training models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../notebooks/cached-preprocessing-and-labeling.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Label learning dataset</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
