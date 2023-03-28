@@ -16,10 +16,11 @@ services:
         - CHOWN_HOME_OPTS=-R
       env_file:
         - .env
-        - local.env
       working_dir: /home/${NB_USER}
-      user: root:root
-      command: "start-notebook.sh \
-        --ip 0.0.0.0 \
+        #user: $UID:$GID
+      command: bash -c "openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/notebook/jupyter.pem -out /etc/ssl/notebook/jupyter.pem \
+                -subj '/C=CZ/ST=Brno/L=Brno/O=VUT/OU=FIT/CN=rrader.github.io'; \
+       start-notebook.sh \
+        --ip 0.0.0.0 --allow-root \
         --NotebookApp.password=${ACCESS_TOKEN} \
         --NotebookApp.certfile=/etc/ssl/notebook/jupyter.pem"
