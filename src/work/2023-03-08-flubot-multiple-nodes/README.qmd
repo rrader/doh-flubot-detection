@@ -1,0 +1,7 @@
+{{< include index.qmd >}}
+{{< include experiment.qmd >}}
+{{< include train-model-plan.qmd >}}
+{{< include flubot-detection-overview.qmd >}}
+{{< include flubot-detection-2-overview.qmd >}}
+{{< include summary.qmd >}}
+{{< include references.qmd >}}
