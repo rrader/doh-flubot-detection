@@ -398,26 +398,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="stage-i-model-tuning" class="level3" data-number="21.0.2">
 <h3 data-number="21.0.2" class="anchored" data-anchor-id="stage-i-model-tuning"><span class="header-section-number">21.0.2</span> Stage I: Model tuning</h3>
 <p>On this state we fit the scaler on the data collected in B1 period, to be used later on the second stage</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:02:50.904692Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:02:50.904396Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:02:51.238577Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:02:51.237831Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:02:50.904673Z&quot;}" data-tags="[]" data-execution_count="3">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:13.691577Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:13.691303Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:14.019653Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:14.018746Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:13.691561Z&quot;}" data-tags="[]" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> detect_common <span class="im">import</span> <span class="op">*</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:02:51.239762Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:02:51.239547Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:02:51.242415Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:02:51.242057Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:02:51.239744Z&quot;}" data-tags="[]" data-execution_count="4">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:14.020955Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:14.020780Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:14.023938Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:14.023452Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:14.020938Z&quot;}" data-tags="[]" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p1version <span class="op">=</span> <span class="st">"v6"</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>p2version <span class="op">=</span> <span class="st">"v7"</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>p3version <span class="op">=</span> <span class="st">"v9"</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>p3version_exp1 <span class="op">=</span> <span class="st">"v5"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:02:51.243231Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:02:51.242905Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:02:51.251484Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:02:51.251061Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:02:51.243217Z&quot;}" data-tags="[&quot;parameters&quot;]" data-execution_count="5">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:14.024765Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:14.024616Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:14.032204Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:14.031728Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:14.024752Z&quot;}" data-tags="[&quot;parameters&quot;]" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> <span class="st">'RF'</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>normed <span class="op">=</span> <span class="va">True</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>skips_and_weights <span class="op">=</span> [<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:02:51.252127Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:02:51.251993Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:02:56.904035Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:02:56.900915Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:02:51.252114Z&quot;}" data-tags="[]" data-execution_count="6">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:14.033027Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:14.032880Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:19.818012Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:19.816816Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:14.033014Z&quot;}" data-tags="[]" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> dateutil.parser</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df_b1 <span class="op">=</span> pd.read_feather(<span class="st">"cached/v9_1.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:02:56.911933Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:02:56.911568Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:00.872865Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:00.871883Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:02:56.911914Z&quot;}" data-tags="[]" data-execution_count="7">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:19.821580Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:19.821395Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:24.352068Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:24.350911Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:19.821563Z&quot;}" data-tags="[]" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>path_doh_ips_androids <span class="op">=</span> basepath <span class="op">+</span> <span class="st">"datasets/flubot20230323/data/v5_benign_doh_ips.csv"</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>path_doh_ips_general <span class="op">=</span> <span class="st">"doh_resolver_ip.csv"</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>full_list <span class="op">=</span> get_doh_ips(path_doh_ips_androids) <span class="op">+</span> get_doh_ips(path_doh_ips_general)</span>
@@ -425,7 +425,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>cp <span class="op">=</span> CacheableProcessing(<span class="dv">100</span>, <span class="dv">100</span>, full_list)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>df_b1_p <span class="op">=</span> cp.process(df_b1, <span class="ss">f"cached/v9_1.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.cp.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:00.874164Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:00.873989Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:01.101226Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:01.100442Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:00.874146Z&quot;}" data-tags="[]" data-execution_count="8">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:24.353766Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:24.353373Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:24.631099Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:24.630109Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:24.353748Z&quot;}" data-tags="[]" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> joblib <span class="im">import</span> dump, load</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> (</span>
@@ -439,14 +439,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>('RF', 'normed-2-4-0-0')</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:01.102875Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:01.102435Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:03.210406Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:03.209257Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:01.102854Z&quot;}" data-tags="[]" data-execution_count="9">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:24.633098Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:24.632303Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:26.781494Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:26.779718Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:24.633079Z&quot;}" data-tags="[]" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.read_feather(<span class="ss">f"cached/robustness.balanced_mix-results.p3.</span><span class="sc">{</span>p3version_exp1<span class="sc">}</span><span class="ss">.ft"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>results_df[<span class="st">"skips_and_weights"</span>] <span class="op">=</span> results_df[<span class="st">"skips_and_weights"</span>].<span class="bu">apply</span>(<span class="bu">str</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>model, normed, skips_and_weights_str, auc, fprs, tprs, thresholds <span class="op">=</span> results_df[</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    (results_df[<span class="st">"model"</span>] <span class="op">==</span> model) <span class="op">&amp;</span> (results_df[<span class="st">"normed"</span>] <span class="op">==</span> normed) <span class="op">&amp;</span> (results_df[<span class="st">"skips_and_weights"</span>] <span class="op">==</span> <span class="bu">str</span>(np.array(skips_and_weights)))</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>].iloc[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:03.212028Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:03.211560Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:08.109669Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:08.108796Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:03.212010Z&quot;}" data-tags="[]" data-execution_count="10">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:26.783638Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:26.782774Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:32.500269Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:32.499079Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:26.783616Z&quot;}" data-tags="[]" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pp_b1 <span class="op">=</span> PreProcessing(normed, <span class="op">*</span>skips_and_weights)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>df_b1_pp <span class="op">=</span> pp_b1.process(</span>
@@ -455,20 +455,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    fit_new_scaler<span class="op">=</span><span class="va">True</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:08.111087Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:08.110801Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:08.115168Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:08.114520Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:08.111067Z&quot;}" data-tags="[]" data-execution_count="11">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:32.501736Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:32.501555Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:32.505956Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:32.505223Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:32.501720Z&quot;}" data-tags="[]" data-execution_count="11">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> <span class="kw">not</span> os.path.exists(<span class="ss">f"cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.scaler"</span>):</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    pp_b1.store_scaler(</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f"cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.scaler"</span></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:08.116826Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:08.116227Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:19.696463Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:19.695240Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:08.116807Z&quot;}" data-tags="[]" data-execution_count="12">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:32.506939Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:32.506783Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:44.072471Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:44.071819Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:32.506926Z&quot;}" data-tags="[]" data-execution_count="12">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>local_ips <span class="op">=</span> df_b1[df_b1[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)][<span class="st">"ipaddr SRC_IP"</span>].unique().tolist()</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>local_ips</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
 <pre><code>['192.168.2.149', '192.168.2.217', '192.168.2.42']</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:19.698533Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:19.698116Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:19.703685Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:19.702828Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:19.698517Z&quot;}" data-tags="[]" data-execution_count="13">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:44.073873Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:44.073513Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:44.077957Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:44.077478Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:44.073856Z&quot;}" data-tags="[]" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict(pp, clf, threshold, df_pp, df_orig):</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">    pp: PreProcessing object</span></span>
@@ -489,7 +489,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df_orig2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:19.705222Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:19.704850Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:03:19.715175Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:03:19.714738Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:19.705202Z&quot;}" data-tags="[]" data-execution_count="14">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:44.078933Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:44.078678Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:20:44.087868Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:20:44.087203Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:44.078913Z&quot;}" data-tags="[]" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calc(df_n):</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> rate(df_h):</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        dns_packets <span class="op">=</span> df_h[df_h[<span class="st">"IsDoHPredicted"</span>] <span class="op">==</span> <span class="va">True</span>][<span class="st">"uint32 PACKETS"</span>].<span class="bu">sum</span>()  <span class="co"># outgoing packets</span></span>
@@ -516,7 +516,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="build-time-series-forecast-models-for-each-host" class="level4" data-number="21.0.2.1">
 <h4 data-number="21.0.2.1" class="anchored" data-anchor-id="build-time-series-forecast-models-for-each-host"><span class="header-section-number">21.0.2.1</span> Build time-series forecast models for each host</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:03:19.716240Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:03:19.715821Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:11:42.272592Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:11:42.271784Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:03:19.716224Z&quot;}" data-tags="[]" data-execution_count="15">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:20:44.089081Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:20:44.088610Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:29:08.600639Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:29:08.599485Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:20:44.089060Z&quot;}" data-tags="[]" data-execution_count="15">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>freq <span class="op">=</span> <span class="st">"2min"</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>behavior_ips_sens <span class="op">=</span> {}</span>
@@ -580,7 +580,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>192.168.2.42</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:11:42.274146Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:11:42.273852Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:11:44.465906Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:11:44.465014Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:11:42.274128Z&quot;}" data-tags="[]" data-execution_count="16">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:29:08.602495Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:29:08.602095Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:29:11.505209Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:29:11.504294Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:29:08.602468Z&quot;}" data-tags="[]" data-execution_count="16">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.arima.model <span class="im">import</span> ARIMA</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>forecast_models <span class="op">=</span> {}  <span class="co"># (sensitivity, ip addr) =&gt; time-series forecasting model</span></span>
@@ -608,14 +608,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="stage-ii-malware-detection" class="level3" data-number="21.0.3">
 <h3 data-number="21.0.3" class="anchored" data-anchor-id="stage-ii-malware-detection"><span class="header-section-number">21.0.3</span> Stage II: Malware detection</h3>
 <p>On this state we turn on the malware detection, provisioning the model with the scaler trained before. For malware detection we use the data trained in B2 period.</p>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:11:44.466942Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:11:44.466779Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:11:47.004800Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:11:47.003958Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:11:44.466927Z&quot;}" data-tags="[]" data-execution_count="17">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:29:11.506309Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:29:11.506115Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:29:14.142549Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:29:14.140504Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:29:11.506283Z&quot;}" data-tags="[]" data-execution_count="17">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df_b2 <span class="op">=</span> pd.read_feather(<span class="st">"cached/v9_2.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:11:47.005897Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:11:47.005680Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:11:57.542529Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:11:57.541815Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:11:47.005882Z&quot;}" data-tags="[]" data-execution_count="18">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:29:14.143775Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:29:14.143604Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:29:26.878001Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:29:26.877217Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:29:14.143760Z&quot;}" data-tags="[]" data-execution_count="18">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>cp <span class="op">=</span> CacheableProcessing(<span class="dv">100</span>, <span class="dv">100</span>, full_list)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>df_b2_p <span class="op">=</span> cp.process(df_b2, <span class="ss">f"cached/v9_2.p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.cp.ft"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:11:57.543476Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:11:57.543322Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:12:12.564887Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:12:12.564030Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:11:57.543462Z&quot;}" data-tags="[]" data-execution_count="19">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:29:26.879191Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:29:26.878928Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:29:46.282684Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:29:46.281812Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:29:26.879175Z&quot;}" data-tags="[]" data-execution_count="19">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>pp_b2 <span class="op">=</span> PreProcessing(normed, <span class="op">*</span>skips_and_weights)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>pp_b2.load_scaler(</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"cached/p3.</span><span class="sc">{</span>p3version<span class="sc">}</span><span class="ss">.pp.</span><span class="sc">{</span>model<span class="sc">}</span><span class="ss">-</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">.scaler"</span></span>
@@ -627,16 +627,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    fit_new_scaler<span class="op">=</span><span class="va">False</span>  <span class="co"># use scaler trained in B1</span></span>
 <span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T19:25:46.537480Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T19:25:46.537223Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T19:25:47.939238Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T19:25:47.938608Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T19:25:46.537464Z&quot;}" data-tags="[]" data-execution_count="39">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:29:46.284134Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:29:46.283726Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:29:48.118602Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:29:48.117881Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:29:46.284113Z&quot;}" data-tags="[]" data-execution_count="20">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>min_ts <span class="op">=</span> df_b2[<span class="st">"time TIME_FIRST"</span>].<span class="bu">apply</span>(dateutil.parser.parse).<span class="bu">min</span>()</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>infection_ts <span class="op">=</span> min_ts <span class="op">+</span> pd.Timedelta(minutes<span class="op">=</span><span class="dv">62</span>) <span class="op">-</span> pd.Timedelta(freq) <span class="op">*</span> window_size</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>min_ts, infection_ts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="39">
+<div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>(Timestamp('2023-03-27 08:11:28.503294'),
  Timestamp('2023-03-27 08:53:28.503294'))</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:12:14.146156Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:12:14.145984Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:12:27.009038Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:12:27.008325Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:12:14.146142Z&quot;}" data-tags="[]" data-execution_count="21">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T23:29:48.120121Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T23:29:48.119790Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T23:30:01.862093Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T23:30:01.860981Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T23:29:48.120103Z&quot;}" data-tags="[]" data-execution_count="21">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> {}</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity <span class="kw">in</span> [<span class="fl">0.8</span>, <span class="fl">0.9</span>]:  <span class="co">#, 0.95]:</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    threshold <span class="op">=</span> [threshold <span class="cf">for</span> tpr, threshold <span class="kw">in</span> <span class="bu">zip</span>(tprs, thresholds) <span class="cf">if</span> tpr <span class="op">&gt;=</span> sensitivity][<span class="dv">0</span>]</span>
@@ -649,7 +649,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="calculate-ratio-on-the-whole-dataset-benign-period-a1-and-infected-a2" class="level4" data-number="21.0.3.1">
 <h4 data-number="21.0.3.1" class="anchored" data-anchor-id="calculate-ratio-on-the-whole-dataset-benign-period-a1-and-infected-a2"><span class="header-section-number">21.0.3.1</span> Calculate ratio on the whole dataset: benign period (A1) and infected (A2)</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:12:27.012478Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:12:27.012253Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:16:28.332299Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:16:28.331635Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:12:27.012461Z&quot;}" data-tags="[]" data-execution_count="22">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-28T07:25:10.930470Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-28T07:25:10.930192Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-28T07:29:11.964046Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-28T07:29:11.963040Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-28T07:25:10.930452Z&quot;}" data-tags="[]" data-execution_count="28">
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> value[<span class="st">"df"</span>]</span>
@@ -666,10 +666,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>    display(calc(local_df_a2))</span>
 <span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.8</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>sensitivity: 0.8 A1</code></pre>
+<pre><code>0.8
+sensitivity: 0.8 A1</code></pre>
 </div>
 <div class="cell-output cell-output-display">
 <div>
@@ -690,18 +688,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
 <td>192.168.2.149</td>
-<td>79451.0</td>
-<td>2058.0</td>
-<td>38.587178</td>
-<td>3.652920</td>
+<td>57817.0</td>
+<td>1602.0</td>
+<td>36.067998</td>
+<td>3.585406</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>192.168.2.217</td>
-<td>64126.0</td>
-<td>1748.0</td>
-<td>36.664380</td>
-<td>3.601806</td>
+<td>39406.0</td>
+<td>1302.0</td>
+<td>30.242517</td>
+<td>3.409249</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
@@ -746,18 +744,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>192.168.2.149</td>
-<td>53922.0</td>
-<td>1524.0</td>
-<td>35.358689</td>
-<td>3.565544</td>
+<td>75556.0</td>
+<td>2041.0</td>
+<td>37.000979</td>
+<td>3.610944</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
 <td>192.168.2.217</td>
-<td>146060.0</td>
-<td>1816.0</td>
-<td>80.385250</td>
-<td>4.386831</td>
+<td>170780.0</td>
+<td>2221.0</td>
+<td>76.858686</td>
+<td>4.341968</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
@@ -797,18 +795,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td data-quarto-table-cell-role="th">0</td>
 <td>192.168.2.149</td>
-<td>92981.0</td>
-<td>1961.0</td>
-<td>47.390928</td>
-<td>3.858431</td>
+<td>67599.0</td>
+<td>1519.0</td>
+<td>44.473026</td>
+<td>3.794883</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>192.168.2.217</td>
-<td>76559.0</td>
-<td>1692.0</td>
-<td>45.220910</td>
-<td>3.811560</td>
+<td>48515.0</td>
+<td>1260.0</td>
+<td>38.473434</td>
+<td>3.649968</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
@@ -853,18 +851,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>192.168.2.149</td>
-<td>65813.0</td>
-<td>1457.0</td>
-<td>45.139232</td>
-<td>3.809752</td>
+<td>91195.0</td>
+<td>1954.0</td>
+<td>46.647059</td>
+<td>3.842610</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
 <td>192.168.2.217</td>
-<td>418387.0</td>
-<td>1730.0</td>
-<td>241.702484</td>
-<td>5.487708</td>
+<td>446431.0</td>
+<td>2127.0</td>
+<td>209.789004</td>
+<td>5.346102</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
@@ -883,37 +881,37 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="split-into-time-windows" class="level4" data-number="21.0.3.2">
 <h4 data-number="21.0.3.2" class="anchored" data-anchor-id="split-into-time-windows"><span class="header-section-number">21.0.3.2</span> Split into time windows</h4>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:16:28.334031Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:16:28.333853Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:16:39.490611Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:16:39.489992Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:16:28.334013Z&quot;}" data-tags="[]" data-execution_count="23">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>local_ips <span class="op">=</span> df_b2[df_b2[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)][<span class="st">"ipaddr SRC_IP"</span>].unique().tolist()</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>local_ips</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="23">
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-28T07:29:11.965716Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-28T07:29:11.965085Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-28T07:29:22.017706Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-28T07:29:22.017139Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-28T07:29:11.965698Z&quot;}" data-tags="[]" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>local_ips <span class="op">=</span> df_b2[df_b2[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)][<span class="st">"ipaddr SRC_IP"</span>].unique().tolist()</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>local_ips</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="29">
 <pre><code>['192.168.2.149', '192.168.2.217', '192.168.2.42', '192.168.1.1']</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:16:39.491873Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:16:39.491501Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:30:57.550005Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:30:57.549143Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:16:39.491856Z&quot;}" data-tags="[]" data-execution_count="24">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> value[<span class="st">"df"</span>]</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    local_df <span class="op">=</span> df_pred[df_pred[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)].copy()</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    local_df[<span class="st">"time TIME_FIRST"</span>] <span class="op">=</span> local_df[<span class="st">"time TIME_FIRST"</span>].<span class="bu">apply</span>(dateutil.parser.parse)</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>    calc_ips <span class="op">=</span> {}</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>    a1_t <span class="op">=</span> local_df.set_index([<span class="st">"time TIME_FIRST"</span>])</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>    df_resample <span class="op">=</span> a1_t.groupby(pd.Grouper(freq<span class="op">=</span>freq, origin<span class="op">=</span>min_ts)).first()</span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>    times <span class="op">=</span> df_resample.index.tolist()</span>
-<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a>    ranges <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(times, times[<span class="dv">1</span>:]))</span>
-<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> []</span>
-<span id="cb37-17"><a href="#cb37-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ran <span class="kw">in</span> ranges:</span>
-<span id="cb37-18"><a href="#cb37-18" aria-hidden="true" tabindex="-1"></a>        df_ran <span class="op">=</span> a1_t[(a1_t.index <span class="op">&gt;</span> ran[<span class="dv">0</span>]) <span class="op">&amp;</span> (a1_t.index <span class="op">&lt;</span> ran[<span class="dv">1</span>])]</span>
-<span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a>        df_calc <span class="op">=</span> calc(df_ran)</span>
-<span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>        df_calc[<span class="st">"ts"</span>] <span class="op">=</span> ran[<span class="dv">0</span>]</span>
-<span id="cb37-21"><a href="#cb37-21" aria-hidden="true" tabindex="-1"></a>        df_calcs.append(df_calc)</span>
-<span id="cb37-22"><a href="#cb37-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-23"><a href="#cb37-23" aria-hidden="true" tabindex="-1"></a>    value[<span class="st">"df_calc"</span>] <span class="op">=</span> pd.concat(df_calcs).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-28T07:29:22.018645Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-28T07:29:22.018487Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-28T07:43:28.793307Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-28T07:43:28.792361Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-28T07:29:22.018630Z&quot;}" data-tags="[]" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    df_pred <span class="op">=</span> value[<span class="st">"df"</span>]</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    local_df <span class="op">=</span> df_pred[df_pred[<span class="st">"ipaddr SRC_IP"</span>].<span class="bu">str</span>.startswith(<span class="st">"192.168"</span>)].copy()</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    local_df[<span class="st">"time TIME_FIRST"</span>] <span class="op">=</span> local_df[<span class="st">"time TIME_FIRST"</span>].<span class="bu">apply</span>(dateutil.parser.parse)</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    calc_ips <span class="op">=</span> {}</span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    a1_t <span class="op">=</span> local_df.set_index([<span class="st">"time TIME_FIRST"</span>])</span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>    df_resample <span class="op">=</span> a1_t.groupby(pd.Grouper(freq<span class="op">=</span>freq, origin<span class="op">=</span>min_ts)).first()</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>    times <span class="op">=</span> df_resample.index.tolist()</span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>    ranges <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(times, times[<span class="dv">1</span>:]))</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> []</span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> ran <span class="kw">in</span> ranges:</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>        df_ran <span class="op">=</span> a1_t[(a1_t.index <span class="op">&gt;</span> ran[<span class="dv">0</span>]) <span class="op">&amp;</span> (a1_t.index <span class="op">&lt;</span> ran[<span class="dv">1</span>])]</span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>        df_calc <span class="op">=</span> calc(df_ran)</span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>        df_calc[<span class="st">"ts"</span>] <span class="op">=</span> ran[<span class="dv">0</span>]</span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>        df_calcs.append(df_calc)</span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>    value[<span class="st">"df_calc"</span>] <span class="op">=</span> pd.concat(df_calcs).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.8</code></pre>
 </div>
@@ -921,61 +919,61 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>0.9</code></pre>
 </div>
 </div>
-<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-27T18:30:57.551566Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-27T18:30:57.550919Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-27T18:30:57.554731Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-27T18:30:57.554215Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-27T18:30:57.551546Z&quot;}" data-tags="[]" data-execution_count="25">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>clean <span class="op">=</span> <span class="st">"192.168.2.149"</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>infected <span class="op">=</span> <span class="st">"192.168.2.217"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution="{&quot;iopub.execute_input&quot;:&quot;2023-03-28T07:43:28.795486Z&quot;,&quot;iopub.status.busy&quot;:&quot;2023-03-28T07:43:28.795113Z&quot;,&quot;iopub.status.idle&quot;:&quot;2023-03-28T07:43:28.802246Z&quot;,&quot;shell.execute_reply&quot;:&quot;2023-03-28T07:43:28.801447Z&quot;,&quot;shell.execute_reply.started&quot;:&quot;2023-03-28T07:43:28.795468Z&quot;}" data-tags="[]" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>clean <span class="op">=</span> <span class="st">"192.168.2.149"</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>infected <span class="op">=</span> <span class="st">"192.168.2.217"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We are using use ARIMA model to calculate confidence interval upper limit for outlier (malware) detection</p>
 <div id="fig-real-world-flubot-detection-1" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    fig, axs <span class="op">=</span> plt.subplots(ncols<span class="op">=</span><span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> value[<span class="st">"df_calc"</span>]</span>
-<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>    df_calcs_clean <span class="op">=</span> df_calcs[df_calcs[<span class="st">"index"</span>] <span class="op">==</span> clean].set_index(<span class="st">"ts"</span>)</span>
-<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>    df_calcs_infected <span class="op">=</span> df_calcs[df_calcs[<span class="st">"index"</span>] <span class="op">==</span> infected].set_index(<span class="st">"ts"</span>)</span>
-<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> host, df, color, hatch <span class="kw">in</span> <span class="bu">zip</span>(</span>
-<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a>        [infected, clean], </span>
-<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a>        [df_calcs_infected, df_calcs_clean], </span>
-<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'blue'</span>, <span class="st">'green'</span>],</span>
-<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'</span><span class="ch">\\</span><span class="st">'</span>, <span class="st">'/'</span>],</span>
-<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>    ):</span>
-<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a>        df_avgd <span class="op">=</span> df.copy()</span>
-<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a>        df_avgd_array <span class="op">=</span> moving_average(df[<span class="st">"rate_log"</span>], window_size)</span>
-<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>        rate_log_ser <span class="op">=</span> pd.Series(df_avgd_array, index<span class="op">=</span>df_avgd[<span class="st">"rate_log"</span>].index[:<span class="bu">len</span>(df_avgd_array)])</span>
-<span id="cb41-19"><a href="#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-20"><a href="#cb41-20" aria-hidden="true" tabindex="-1"></a>        rate_log_ser.plot(</span>
-<span id="cb41-21"><a href="#cb41-21" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="ss">f'rate_log of </span><span class="sc">{</span>host<span class="sc">}</span><span class="ss">, mean rolling window=</span><span class="sc">{</span>window_size<span class="sc">}</span><span class="ss">'</span>,</span>
-<span id="cb41-22"><a href="#cb41-22" aria-hidden="true" tabindex="-1"></a>            ax<span class="op">=</span>axs, color<span class="op">=</span>color</span>
-<span id="cb41-23"><a href="#cb41-23" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb41-24"><a href="#cb41-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (sensitivity, host) <span class="kw">in</span> forecast_models:</span>
-<span id="cb41-25"><a href="#cb41-25" aria-hidden="true" tabindex="-1"></a>            forecast_model <span class="op">=</span> forecast_models[(sensitivity, host)]</span>
-<span id="cb41-26"><a href="#cb41-26" aria-hidden="true" tabindex="-1"></a>            forecast <span class="op">=</span> forecast_model.get_forecast(<span class="bu">len</span>(rate_log_ser))</span>
-<span id="cb41-27"><a href="#cb41-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-28"><a href="#cb41-28" aria-hidden="true" tabindex="-1"></a>            yhat_conf_int <span class="op">=</span> forecast.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
-<span id="cb41-29"><a href="#cb41-29" aria-hidden="true" tabindex="-1"></a>            under_line <span class="op">=</span> [v[<span class="dv">0</span>] <span class="cf">for</span> v <span class="kw">in</span> yhat_conf_int]</span>
-<span id="cb41-30"><a href="#cb41-30" aria-hidden="true" tabindex="-1"></a>            over_line <span class="op">=</span> [v[<span class="dv">1</span>] <span class="cf">for</span> v <span class="kw">in</span> yhat_conf_int]</span>
-<span id="cb41-31"><a href="#cb41-31" aria-hidden="true" tabindex="-1"></a>            plt.fill_between(</span>
-<span id="cb41-32"><a href="#cb41-32" aria-hidden="true" tabindex="-1"></a>                rate_log_ser.index, under_line,</span>
-<span id="cb41-33"><a href="#cb41-33" aria-hidden="true" tabindex="-1"></a>                over_line, color<span class="op">=</span>color, alpha<span class="op">=</span><span class="fl">.1</span>,</span>
-<span id="cb41-34"><a href="#cb41-34" aria-hidden="true" tabindex="-1"></a>                hatch<span class="op">=</span>hatch, edgecolor<span class="op">=</span><span class="st">'black'</span></span>
-<span id="cb41-35"><a href="#cb41-35" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb41-36"><a href="#cb41-36" aria-hidden="true" tabindex="-1"></a>            plt.fill(</span>
-<span id="cb41-37"><a href="#cb41-37" aria-hidden="true" tabindex="-1"></a>                np.NaN, np.NaN, color<span class="op">=</span>color, alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
-<span id="cb41-38"><a href="#cb41-38" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>host<span class="sc">}</span><span class="ss"> confidence interval'</span>, hatch<span class="op">=</span>hatch</span>
-<span id="cb41-39"><a href="#cb41-39" aria-hidden="true" tabindex="-1"></a>            )</span>
-<span id="cb41-40"><a href="#cb41-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-41"><a href="#cb41-41" aria-hidden="true" tabindex="-1"></a>    plt.axvline(</span>
-<span id="cb41-42"><a href="#cb41-42" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>infection_ts, label<span class="op">=</span><span class="st">"Infection (B2 period start)"</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span></span>
-<span id="cb41-43"><a href="#cb41-43" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb41-44"><a href="#cb41-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-45"><a href="#cb41-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># plt.ylim(ymin=0)</span></span>
-<span id="cb41-46"><a href="#cb41-46" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Sensitivity: </span><span class="sc">{</span>sensitivity<span class="sc">}</span><span class="ss">, threshold: </span><span class="sc">{</span>value[<span class="st">'threshold'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb41-47"><a href="#cb41-47" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
-<span id="cb41-48"><a href="#cb41-48" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> sensitivity, value <span class="kw">in</span> data.items():</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(sensitivity)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    fig, axs <span class="op">=</span> plt.subplots(ncols<span class="op">=</span><span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>    df_calcs <span class="op">=</span> value[<span class="st">"df_calc"</span>]</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    df_calcs_clean <span class="op">=</span> df_calcs[df_calcs[<span class="st">"index"</span>] <span class="op">==</span> clean].set_index(<span class="st">"ts"</span>)</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    df_calcs_infected <span class="op">=</span> df_calcs[df_calcs[<span class="st">"index"</span>] <span class="op">==</span> infected].set_index(<span class="st">"ts"</span>)</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> host, df, color, hatch <span class="kw">in</span> <span class="bu">zip</span>(</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>        [infected, clean], </span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>        [df_calcs_infected, df_calcs_clean], </span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'blue'</span>, <span class="st">'green'</span>],</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>        [<span class="st">'</span><span class="ch">\\</span><span class="st">'</span>, <span class="st">'/'</span>],</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>    ):</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>        df_avgd <span class="op">=</span> df.copy()</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>        df_avgd_array <span class="op">=</span> moving_average(df[<span class="st">"rate_log"</span>], window_size)</span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>        rate_log_ser <span class="op">=</span> pd.Series(df_avgd_array, index<span class="op">=</span>df_avgd[<span class="st">"rate_log"</span>].index[:<span class="bu">len</span>(df_avgd_array)])</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>        rate_log_ser.plot(</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a>            label<span class="op">=</span><span class="ss">f'rate_log of </span><span class="sc">{</span>host<span class="sc">}</span><span class="ss">, mean rolling window=</span><span class="sc">{</span>window_size<span class="sc">}</span><span class="ss">'</span>,</span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>            ax<span class="op">=</span>axs, color<span class="op">=</span>color</span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (sensitivity, host) <span class="kw">in</span> forecast_models:</span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>            forecast_model <span class="op">=</span> forecast_models[(sensitivity, host)]</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>            forecast <span class="op">=</span> forecast_model.get_forecast(<span class="bu">len</span>(rate_log_ser))</span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>            yhat_conf_int <span class="op">=</span> forecast.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb40-29"><a href="#cb40-29" aria-hidden="true" tabindex="-1"></a>            under_line <span class="op">=</span> [v[<span class="dv">0</span>] <span class="cf">for</span> v <span class="kw">in</span> yhat_conf_int]</span>
+<span id="cb40-30"><a href="#cb40-30" aria-hidden="true" tabindex="-1"></a>            over_line <span class="op">=</span> [v[<span class="dv">1</span>] <span class="cf">for</span> v <span class="kw">in</span> yhat_conf_int]</span>
+<span id="cb40-31"><a href="#cb40-31" aria-hidden="true" tabindex="-1"></a>            plt.fill_between(</span>
+<span id="cb40-32"><a href="#cb40-32" aria-hidden="true" tabindex="-1"></a>                rate_log_ser.index, under_line,</span>
+<span id="cb40-33"><a href="#cb40-33" aria-hidden="true" tabindex="-1"></a>                over_line, color<span class="op">=</span>color, alpha<span class="op">=</span><span class="fl">.1</span>,</span>
+<span id="cb40-34"><a href="#cb40-34" aria-hidden="true" tabindex="-1"></a>                hatch<span class="op">=</span>hatch, edgecolor<span class="op">=</span><span class="st">'black'</span></span>
+<span id="cb40-35"><a href="#cb40-35" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb40-36"><a href="#cb40-36" aria-hidden="true" tabindex="-1"></a>            plt.fill(</span>
+<span id="cb40-37"><a href="#cb40-37" aria-hidden="true" tabindex="-1"></a>                np.NaN, np.NaN, color<span class="op">=</span>color, alpha<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb40-38"><a href="#cb40-38" aria-hidden="true" tabindex="-1"></a>                label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>host<span class="sc">}</span><span class="ss"> confidence interval'</span>, hatch<span class="op">=</span>hatch</span>
+<span id="cb40-39"><a href="#cb40-39" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb40-40"><a href="#cb40-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-41"><a href="#cb40-41" aria-hidden="true" tabindex="-1"></a>    plt.axvline(</span>
+<span id="cb40-42"><a href="#cb40-42" aria-hidden="true" tabindex="-1"></a>        x<span class="op">=</span>infection_ts, label<span class="op">=</span><span class="st">"Infection"</span>, color<span class="op">=</span><span class="st">"red"</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, alpha<span class="op">=</span><span class="fl">0.5</span></span>
+<span id="cb40-43"><a href="#cb40-43" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb40-44"><a href="#cb40-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-45"><a href="#cb40-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># plt.ylim(ymin=0)</span></span>
+<span id="cb40-46"><a href="#cb40-46" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f"Sensitivity: </span><span class="sc">{</span>sensitivity<span class="sc">}</span><span class="ss">, threshold: </span><span class="sc">{</span>value[<span class="st">'threshold'</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb40-47"><a href="#cb40-47" aria-hidden="true" tabindex="-1"></a>    plt.legend()</span>
+<span id="cb40-48"><a href="#cb40-48" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>0.8</code></pre>
 </div>

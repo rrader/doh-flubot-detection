@@ -7,6 +7,7 @@ services:
         - ${LOCAL_DATASETS}:/home/${NB_USER}/datasets
         - ${LOCAL_CONFIG}:/home/${NB_USER}/.jupyter
         - ${LOCAL_SSL_CERTS}:/etc/ssl/notebook
+        - ../:/home/${NB_USER}/repository
       ports:
         - ${PORT}:8888
         - "8787:8787"
@@ -17,7 +18,6 @@ services:
       env_file:
         - .env
       working_dir: /home/${NB_USER}
-        #user: $UID:$GID
       command: bash -c "openssl req -x509 -nodes -newkey rsa:2048 -keyout /etc/ssl/notebook/jupyter.pem -out /etc/ssl/notebook/jupyter.pem \
                 -subj '/C=CZ/ST=Brno/L=Brno/O=VUT/OU=FIT/CN=rrader.github.io'; \
        start-notebook.sh \

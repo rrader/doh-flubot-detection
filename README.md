@@ -75,10 +75,10 @@ alt="Figure 1: Flubot masks as a flash player" />
 The proposed method is based on the two steps:
 
 - Classify network flows as a DoH or non-DoH, with a classifier built on
-  the @Jerabek2022Collection dataset
+  the Jeřábek et al. (2022) dataset
   (<https://zenodo.org/record/6024914#.ZAcru-xBzaV>)
-- Apply the Netflow-based DGA detection algorithm @Grill2015 to detect
-  infected machines
+- Apply the Netflow-based DGA detection algorithm Grill et al. (2015) to
+  detect infected machines
 
 Machine-learning classification of DoH traffic allows us to apply the
 algorithm to DoH traffic, originally designed for the plaintext DNS.
@@ -89,7 +89,7 @@ DoH traffic uses using standard HTTPS 443 port, which blends DNS packets
 within the generic HTTPS traffic. Netflow/IPFIX data of the DoH traffic
 does not contain direct features which could help to distinguish DNS
 traffic from other HTTPS communications. In this experiment we build a
-classifier on the @Jerabek2022Collection dataset using Logistic
+classifier on the Jeřábek et al. (2022) dataset using Logistic
 Regression, Random Forest and the Histogram-based Gradient Boosting
 (**?@sec-build-models**), and selecting the models which are the most
 robust to the different network environment (**?@sec-robustness**).
@@ -125,10 +125,10 @@ alt="Figure 3: Model training overview" />
 
 To detect the malicious behavior of the machine, we propose to use the
 ratio of DNS requests and contacted IP addresses for every host in the
-local network described in the @Grill2015. The paper was focused on
-DGA-based malware detection. However, the approach should be used to
-detect DNS data exfiltration, too, since the behavior pattern is similar
-(see [Section 5](#sec-detection-overview)).
+local network described in the Grill et al. (2015). The paper was
+focused on DGA-based malware detection. However, the approach should be
+used to detect DNS data exfiltration, too, since the behavior pattern is
+similar (see [Section 5](#sec-detection-overview)).
 
 <img src="readme_media/imgs/detection.png" id="fig-detection-overview"
 alt="Figure 4: Malware detection overview" />
@@ -264,7 +264,7 @@ alt="Figure 8: Timeline" />
 ## Training data
 
 Model training is done on the DoH traffic collection described in
-@Jerabek2022Collection
+Jeřábek et al. (2022)
 
 - <https://zenodo.org/record/6024914#.ZAcru-xBzaV>
 
@@ -413,7 +413,7 @@ id="fig-model-deployment" alt="Figure 11: Model deployment" />
 
 To detect the malicious behavior of the machine, we propose to use the
 ratio of DNS requests and contacted IP addresses for every host in the
-local network described in the @Grill2015:
+local network described in the Grill et al. (2015):
 
 $$\rho(a)={\delta(a) \over \pi(a) + 1}$$
 
@@ -491,7 +491,7 @@ collecting data in two (B1 and B2) periods (see
 | 11:11:34 AM | 98             | 57       | B2: Start data collection again (ipfixprobe and logger) |
 | 12:13:30 PM | 160            | 62       | Started infect.sh                                       |
 | 1:15:11 PM  | 221            | 62       | Stop data collection, save result to v9_2.csv           |
-| 1:15:34 PM  | 222            | 0        | Stop traffic2.py, save v8_exp.log                       |
+| 1:15:34 PM  | 222            | 0        | Stop traffic2.py, save v9_exp.log                       |
 
 ## Artifacts
 
@@ -723,6 +723,23 @@ $\rho(a)$ plot for clean and infected instances (B2 period)
 
 # References
 
-  - Grill, Martin, Ivan Nikolaev, Veronica Valeros, and Martin Rehak. 2015. “Detecting DGA Malware Using NetFlow.” In 2015 IFIP/IEEE International Symposium on Integrated Network Management (IM), 1304–9. https://doi.org/10.1109/INM.2015.7140486.
-  - Jeřábek, Kamil, Karel Hynek, Tomáš Čejka, and Ondřej Ryšavý. 2022. “Collection of Datasets with DNS over HTTPS Traffic.” Data in Brief 42 (June): 108310. https://doi.org/10.1016/j.dib.2022.108310.
+<div id="refs" class="references csl-bib-body hanging-indent">
 
+<div id="ref-Grill2015" class="csl-entry">
+
+Grill, Martin, Ivan Nikolaev, Veronica Valeros, and Martin Rehak. 2015.
+“Detecting DGA Malware Using NetFlow.” In *2015 IFIP/IEEE International
+Symposium on Integrated Network Management (IM)*, 1304–9.
+<https://doi.org/10.1109/INM.2015.7140486>.
+
+</div>
+
+<div id="ref-Jerabek2022Collection" class="csl-entry">
+
+Jeřábek, Kamil, Karel Hynek, Tomáš Čejka, and Ondřej Ryšavý. 2022.
+“Collection of Datasets with DNS over HTTPS Traffic.” *Data in Brief* 42
+(June): 108310. <https://doi.org/10.1016/j.dib.2022.108310>.
+
+</div>
+
+</div>
